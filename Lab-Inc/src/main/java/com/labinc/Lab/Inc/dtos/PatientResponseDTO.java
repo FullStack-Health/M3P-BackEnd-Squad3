@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -15,7 +14,7 @@ import java.util.UUID;
 public class PatientResponseDTO {
 
     @Schema(description = "Patient ID")
-    private UUID id;
+    private Long id;
 
     @Schema(description = " Patient fullName")
     private String fullName;
