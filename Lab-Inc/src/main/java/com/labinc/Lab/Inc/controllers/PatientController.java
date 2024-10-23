@@ -6,10 +6,7 @@ import com.labinc.Lab.Inc.services.PatientService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -27,17 +24,17 @@ public class PatientController {
 
     @PostMapping
     public ResponseEntity<PatientResponseDTO> addPatient(@Valid @RequestBody PatientRequestDTO patientRequestDTO) {
-
-        // Chamando o serviço para criar um novo paciente e obter o PatientResponseDTO
         PatientResponseDTO patientResponseDTO = patientService.newPatient(patientRequestDTO);
-
-        // Construindo a URI do novo recurso criado com base no ID retornado
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(patientResponseDTO.getId())
                 .toUri();
-
-        // Retornando a resposta com o status 201 Created e o objeto PatientResponseDTO no corpo
         return ResponseEntity.created(uri).body(patientResponseDTO);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PatientResponseDTO> patientById(@PathVariable Long id) {
+        PatientResponseDTO patientResponseDTO = patientService.patientById(id);
+        return ResponseEntity.ok(patientResponseDTO);
     }
 }

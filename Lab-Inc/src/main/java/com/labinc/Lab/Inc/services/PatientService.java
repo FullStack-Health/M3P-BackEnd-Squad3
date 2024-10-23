@@ -5,7 +5,9 @@ import com.labinc.Lab.Inc.dtos.PatientResponseDTO;
 import com.labinc.Lab.Inc.entities.Patient;
 import com.labinc.Lab.Inc.repositories.PatientRepository;
 import com.labinc.Lab.Inc.services.exceptions.ResourceAlreadyExistsException;
+import com.labinc.Lab.Inc.services.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PatientService {
@@ -16,6 +18,7 @@ public class PatientService {
         this.patientRepository = patientRepository;
     }
 
+    @Transactional
     public PatientResponseDTO newPatient(PatientRequestDTO patientRequestDTO) {
 
         // TODO: Fazer Verificação Código401(Unauthorized)- Falha de autenticação.
@@ -64,7 +67,7 @@ public class PatientService {
         patient = patientRepository.save(patient);
 
         // Criar o DTO de resposta
-        PatientResponseDTO patientResponseDTO = new PatientResponseDTO();
+        PatientResponseDTO patientResponseDTO = new PatientResponseDTO(patient);
         patientResponseDTO.setId(patient.getId());
         patientResponseDTO.setFullName(patient.getFullName());
         patientResponseDTO.setGender(patient.getGender());
@@ -92,5 +95,18 @@ public class PatientService {
 
         return patientResponseDTO;
     }
+
+    @Transactional(readOnly = true)
+    public PatientResponseDTO patientById(Long id) {
+
+//      TODO: Fazer Verificação Código401(Unauthorized)- Falha de autenticação.
+
+        Patient patient = patientRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Paciente não encontrado com o id " + id)
+        );
+        return new PatientResponseDTO(patient);
+    }
+
+
 }
 

@@ -1,6 +1,7 @@
 package com.labinc.Lab.Inc.dtos;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.labinc.Lab.Inc.entities.Patient;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -87,5 +88,31 @@ public class PatientResponseDTO {
     @Schema(description = "Patient referencePoint")
     private String referencePoint;
 
+    public PatientResponseDTO(Patient patient) {
+        this.id = patient.getId();
+        this.fullName = patient.getFullName();
+        this.gender = patient.getGender();
+        this.birthDate = patient.getBirthDate();
+        this.cpf = patient.getCpf();
+        this.rg = patient.getRg();
+        this.maritalStatus = patient.getMaritalStatus();
+        this.phone = patient.getPhone();
+        this.email = patient.getEmail();
+        this.placeOfBirth = patient.getPlaceOfBirth();
+        this.emergencyContact = patient.getEmergencyContact();
+        this.listOfAllergies = patient.getListOfAllergies();
+        this.listCare = patient.getListCare();
+        this.healthInsurance = patient.getHealthInsurance();
+        this.healthInsuranceNumber = patient.getHealthInsuranceNumber();
+        this.healthInsuranceVal = patient.getHealthInsuranceVal();
+        this.zipcode = patient.getZipcode();
+        this.street = patient.getStreet();
+        this.addressNumber = patient.getAddressNumber();
+        this.neighborhood = patient.getNeighborhood();
+        this.city = patient.getCity();
+        this.state = patient.getState();
+        this.complement = patient.getComplement();
+        this.referencePoint = patient.getReferencePoint();
+    }
 }
 
