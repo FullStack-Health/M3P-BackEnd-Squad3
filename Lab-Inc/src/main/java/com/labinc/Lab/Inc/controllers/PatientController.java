@@ -45,4 +45,10 @@ public class PatientController {
         Page<PatientResponseDTO> patientResponseDTO = patientService.listPatients(pageable);
         return ResponseEntity.ok(patientResponseDTO);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updatePatient(@PathVariable Long id, @Valid @RequestBody PatientRequestDTO patientRequestDTO){
+        PatientResponseDTO patientUpdated = patientService.updatePatient(id, patientRequestDTO);
+        return ResponseEntity.ok(patientUpdated);
+    }
 }
