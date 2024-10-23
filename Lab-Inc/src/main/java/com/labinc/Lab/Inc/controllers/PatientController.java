@@ -4,6 +4,8 @@ import com.labinc.Lab.Inc.dtos.PatientRequestDTO;
 import com.labinc.Lab.Inc.dtos.PatientResponseDTO;
 import com.labinc.Lab.Inc.services.PatientService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +37,12 @@ public class PatientController {
     @GetMapping("/{id}")
     public ResponseEntity<PatientResponseDTO> patientById(@PathVariable Long id) {
         PatientResponseDTO patientResponseDTO = patientService.patientById(id);
+        return ResponseEntity.ok(patientResponseDTO);
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<PatientResponseDTO>> listPatients(Pageable pageable) {
+        Page<PatientResponseDTO> patientResponseDTO = patientService.listPatients(pageable);
         return ResponseEntity.ok(patientResponseDTO);
     }
 }

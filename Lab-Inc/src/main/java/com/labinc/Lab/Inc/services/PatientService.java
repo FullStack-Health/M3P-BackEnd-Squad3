@@ -6,6 +6,8 @@ import com.labinc.Lab.Inc.entities.Patient;
 import com.labinc.Lab.Inc.repositories.PatientRepository;
 import com.labinc.Lab.Inc.services.exceptions.ResourceAlreadyExistsException;
 import com.labinc.Lab.Inc.services.exceptions.ResourceNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -99,12 +101,22 @@ public class PatientService {
     @Transactional(readOnly = true)
     public PatientResponseDTO patientById(Long id) {
 
-//      TODO: Fazer Verificação Código401(Unauthorized)- Falha de autenticação.
+        //  TODO: Fazer Verificação Código401(Unauthorized)- Falha de autenticação.
 
         Patient patient = patientRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Paciente não encontrado com o id " + id)
         );
         return new PatientResponseDTO(patient);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<PatientResponseDTO> listPatients(Pageable pageable) {
+
+        //  TODO: Fazer Verificação Código401(Unauthorized)- Falha de autenticação.
+        //  TODO: Criar  Parâmetros de query: nome, telefone, e-mail.(Opcional)
+
+        Page<Patient> result = patientRepository.findAll(pageable);
+        return result.map(PatientResponseDTO::new);
     }
 
 
