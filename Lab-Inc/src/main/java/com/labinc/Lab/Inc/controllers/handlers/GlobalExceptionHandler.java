@@ -3,6 +3,7 @@ package com.labinc.Lab.Inc.controllers.handlers;
 import com.labinc.Lab.Inc.dtos.CustomError;
 import com.labinc.Lab.Inc.dtos.ValidationError;
 import com.labinc.Lab.Inc.services.exceptions.ResourceAlreadyExistsException;
+import com.labinc.Lab.Inc.services.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +33,14 @@ public class GlobalExceptionHandler {
         for (FieldError f: e.getBindingResult().getFieldErrors()){
             error.addError(f.getField(), f.getDefaultMessage());
         }
+        return ResponseEntity.status(status).body(error);
+    }
+
+    //    Exception para recurso não encontrado
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<CustomError> resourceNotFound(ResourceNotFoundException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        CustomError error = new CustomError(Instant.now(), status.value(), e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status).body(error);
     }
 
