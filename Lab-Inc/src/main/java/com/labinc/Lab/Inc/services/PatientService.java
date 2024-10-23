@@ -10,6 +10,7 @@ import com.labinc.Lab.Inc.services.exceptions.ResourceNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 
@@ -136,7 +137,16 @@ public class PatientService {
         return new PatientResponseDTO(updatedPatient);
     }
 
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public void deletePatient(Long id){
 
+        //  TODO: Fazer Verificação Código401(Unauthorized)- Falha de autenticação.
+
+        if (!patientRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Paciente com ID: " + id + " não encontrado.");
+        }
+        patientRepository.deleteById(id);
+    }
 
 }
 
