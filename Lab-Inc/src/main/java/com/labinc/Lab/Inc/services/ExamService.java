@@ -45,5 +45,12 @@ public class ExamService {
 
     }
 
+    @Transactional(readOnly = true)
+    public ExamResponseDTO examById(Long id){
+        Exam exam = examRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Exame não encontrado com o id " + id)
+        );
+        return new ExamResponseDTO(exam);
+    }
 
 }
