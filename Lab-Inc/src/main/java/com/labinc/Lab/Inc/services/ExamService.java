@@ -11,6 +11,7 @@ import com.labinc.Lab.Inc.services.exceptions.ResourceNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -75,6 +76,15 @@ public class ExamService {
 
         Exam updatedExam = examRepository.save(exam);
         return new ExamResponseDTO(updatedExam);
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public void deleteExam(Long id){
+
+        if (!examRepository.existsById(id)){
+            throw new ResourceNotFoundException("Exame com o ID: " + id + " não encontrado.");
+        }
+        examRepository.deleteById(id);
     }
 
 }
