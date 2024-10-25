@@ -4,6 +4,7 @@ import com.labinc.Lab.Inc.dtos.ExamRequestDTO;
 import com.labinc.Lab.Inc.dtos.ExamResponseDTO;
 import com.labinc.Lab.Inc.entities.Exam;
 import com.labinc.Lab.Inc.entities.Patient;
+import com.labinc.Lab.Inc.mappers.ExamMapper;
 import com.labinc.Lab.Inc.repositories.ExamRepository;
 import com.labinc.Lab.Inc.repositories.PatientRepository;
 import com.labinc.Lab.Inc.services.exceptions.ResourceNotFoundException;
@@ -63,6 +64,17 @@ public class ExamService {
 
         Page<Exam> exams = examRepository.findAll(pageable);
         return exams.map(ExamResponseDTO::new);
+    }
+
+    @Transactional
+    public ExamResponseDTO updateExam(Long id, ExamRequestDTO examRequestDTO){
+        Exam exam = examRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Exame com ID: " + id + " não encontrado."));
+
+        ExamMapper.updateExamFromDTO(examRequestDTO, exam);
+
+        Exam updatedExam = examRepository.save(exam);
+        return new ExamResponseDTO(updatedExam);
     }
 
 }

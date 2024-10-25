@@ -45,4 +45,12 @@ public class ExamController {
         Page<ExamResponseDTO> examResponseDTOPage = examService.listExams(pageable);
         return ResponseEntity.ok(examResponseDTOPage);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateExam(@PathVariable Long id, @Valid @RequestBody ExamRequestDTO examRequestDTO){
+        ExamResponseDTO examUpdated = examService.updateExam(id, examRequestDTO);
+        return ResponseEntity.ok(examUpdated);
+    }
+
+
 }
