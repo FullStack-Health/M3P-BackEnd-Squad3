@@ -45,6 +45,7 @@ public class ExamResponseDTO {
 
     public ExamResponseDTO(Exam exam){
         id = exam.getId();
+        examName = exam.getExamName();
         examDate = exam.getExamDate();
         examTime = exam.getExamTime();
         examType = exam.getExamType();
