@@ -1,5 +1,6 @@
 package com.labinc.Lab.Inc.dtos;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.labinc.Lab.Inc.entities.Exam;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -22,9 +23,11 @@ public class ExamResponseDTO {
     private String examName;
 
     @Schema(description = " Exam examDate")
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate examDate;
 
     @Schema(description = " Exam examTime")
+    @JsonFormat(pattern = "HH:mm")
     private LocalTime examTime;
 
     @Schema(description = " Exam examType")
