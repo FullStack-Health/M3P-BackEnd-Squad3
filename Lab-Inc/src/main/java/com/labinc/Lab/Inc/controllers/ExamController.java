@@ -4,6 +4,8 @@ import com.labinc.Lab.Inc.dtos.ExamRequestDTO;
 import com.labinc.Lab.Inc.dtos.ExamResponseDTO;
 import com.labinc.Lab.Inc.services.ExamService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -36,5 +38,11 @@ public class ExamController {
     public ResponseEntity<ExamResponseDTO> examById(@PathVariable Long id){
         ExamResponseDTO examResponseDTO = examService.examById(id);
         return ResponseEntity.ok(examResponseDTO);
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<ExamResponseDTO>> listExams(Pageable pageable){
+        Page<ExamResponseDTO> examResponseDTOPage = examService.listExams(pageable);
+        return ResponseEntity.ok(examResponseDTOPage);
     }
 }
