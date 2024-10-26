@@ -9,15 +9,31 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.io.IOException;
 import java.time.Instant;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+//    @ExceptionHandler(HttpMessageNotReadableException.class)
+//    public ResponseEntity<String> handleHttpMessageNotReadable(HttpMessageNotReadableException e) {
+//        return ResponseEntity.badRequest().body("Invalid input: " + e.getMessage());
+//    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<String> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
+        String customMessage = "Input error: invalid value or empty field.";
+        return ResponseEntity.badRequest().body(customMessage);
+    }
+
 
     //    Exception para Conflicts
     @ExceptionHandler(ResourceAlreadyExistsException.class)
@@ -81,6 +97,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({Exception.class})
     public ResponseEntity<String> handleGeneralException(Exception e) {
         return new ResponseEntity<>("Internal server error.", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(IOException.class)
+    public ResponseEntity<String> handleIOException(IOException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
     }
 }
 
