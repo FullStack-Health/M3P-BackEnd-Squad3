@@ -1,5 +1,7 @@
 package com.labinc.Lab.Inc.controllers;
 
+import com.labinc.Lab.Inc.dtos.PartialUserRequestDTO;
+import com.labinc.Lab.Inc.dtos.PasswordRequestDTO;
 import com.labinc.Lab.Inc.dtos.UserRequestDTO;
 import com.labinc.Lab.Inc.dtos.UserResponseDTO;
 import com.labinc.Lab.Inc.entities.AllowedRoles;
@@ -72,6 +74,14 @@ public class UserController {
         return ResponseEntity.ok(userResponseDTO);
     }
 
+    @PutMapping("/email/{email}/redefine-password")
+    public ResponseEntity<Void> redefinePassword(@PathVariable String email, @Valid @RequestBody PasswordRequestDTO passwordRequest) {
+        userService.redefinePassword(email, passwordRequest);
+        return ResponseEntity.noContent().build();
+    }
 
-
+    @PostMapping("/pre-registration")
+    public ResponseEntity<UserResponseDTO> preRegisterUser(@Valid @RequestBody PartialUserRequestDTO userRequest) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.preRegisterUser(userRequest));
+    }
 }

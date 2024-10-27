@@ -1,11 +1,15 @@
 package com.labinc.Lab.Inc.mappers;
 
+import com.labinc.Lab.Inc.dtos.PartialUserRequestDTO;
 import com.labinc.Lab.Inc.dtos.UserRequestDTO;
 import com.labinc.Lab.Inc.dtos.UserResponseDTO;
 import com.labinc.Lab.Inc.entities.User;
 import com.labinc.Lab.Inc.repositories.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
+import java.util.Random;
 
 @Component
 public class UserMapper {
@@ -24,7 +28,6 @@ public class UserMapper {
         user.setPhone(dto.getPhone());
         return user;
     }
-
 
     public UserResponseDTO toResponseDTO(User user) {
         UserResponseDTO dto = new UserResponseDTO();
@@ -47,5 +50,14 @@ public class UserMapper {
         user.setPhone(dto.getPhone());
     }
 
-
+    public User toUser(PartialUserRequestDTO source) {
+        User target = new User();
+        target.setFullName("-");
+        target.setEmail(source.getEmail());
+        target.setBirthdate(LocalDate.parse("0001-01-01"));
+        target.setCpf(String.valueOf(new Random().nextInt(999999999) + 1));
+        target.setRoleName(source.getRole());
+        target.setPhone("(00) 0 0000-0000");
+        return target;
+    }
 }

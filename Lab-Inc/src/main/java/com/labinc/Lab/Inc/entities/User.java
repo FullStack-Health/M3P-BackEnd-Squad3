@@ -5,15 +5,19 @@ import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.Collections;
 
 @Entity
 @Table(name="users")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class User implements UserDetails {
 
     @Column(nullable = false)
     private AllowedRoles roleName;
@@ -39,8 +43,7 @@ public class User {
     @Column(nullable = false)
     private String phone;
 
-
-    public String getPasswordMasked() {
+    public String getPasswordMasked(String password) {
         if (password == null || password.length() <= 4) {
             return password; // Retorna a senha original se for nula ou menor ou igual a 4 caracteres
         }
@@ -51,5 +54,20 @@ public class User {
     @Column(nullable = false, length = 255)
     private String password;
 
-}
+    private String passwordMasked;
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singleton(roleName);
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+}

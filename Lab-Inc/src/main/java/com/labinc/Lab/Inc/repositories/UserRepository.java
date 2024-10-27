@@ -30,4 +30,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
             @Param("fullName") String fullName,
             @Param("email") String email,
             Pageable pageable);
+
+    Optional<User> findByCpf(String cpf);
 }
