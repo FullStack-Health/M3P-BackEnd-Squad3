@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 @Entity
-@Table(name = "users")
+@Table(name="users")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -42,6 +42,14 @@ public class User implements UserDetails {
 
     @Column(nullable = false)
     private String phone;
+
+    public String getPasswordMasked(String password) {
+        if (password == null || password.length() <= 4) {
+            return password; // Retorna a senha original se for nula ou menor ou igual a 4 caracteres
+        }
+        // Mostra os 4 primeiros caracteres e substitui o restante por '*'
+        return password.substring(0, 4) + "*".repeat(password.length() - 4);
+    }
 
     @Column(nullable = false, length = 255)
     private String password;
