@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DashboardResponseDTO {
 
-    private Integer countPatients;
+    private Long countPatients;
 
-    private Integer countAppointments;
+    private Long countAppointments;
 
-    private Integer countExams;
+    private Long countExams;
 
-    private Integer countUsers;
+    private Long countUsers;
 }
