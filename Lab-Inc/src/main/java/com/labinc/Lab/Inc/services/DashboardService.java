@@ -6,6 +6,8 @@ import com.labinc.Lab.Inc.repositories.ExamRepository;
 import com.labinc.Lab.Inc.repositories.PatientRepository;
 import com.labinc.Lab.Inc.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,8 +21,10 @@ public class DashboardService {
     private ExamRepository examRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private JwtDecoder jwtDecoder;
 
-    public DashboardResponseDTO getDashboardStats() {
+    public DashboardResponseDTO getDashboardStats(String token) {
 
         DashboardResponseDTO dashboardResponseDTO = new DashboardResponseDTO();
 
@@ -28,8 +32,13 @@ public class DashboardService {
         dashboardResponseDTO.setCountAppointments(appointmentRepository.count());
         dashboardResponseDTO.setCountExams(examRepository.count());
 
-        //TODO: Implementar junto com o security (Para o atributo "Quantidade de usuários": retornar "null" quando o perfil for diferente de ROLE_ADMIN)
+        Jwt tokenDecodificado = jwtDecoder.decode(token.split(" ")[1]);
+
+        if ("ADMIN".equals(tokenDecodificado.getClaim("scope"))) {
         dashboardResponseDTO.setCountUsers(userRepository.count());
+        } else {
+            dashboardResponseDTO.setCountUsers(null);
+        }
 
         return dashboardResponseDTO;
     }

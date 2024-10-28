@@ -38,6 +38,14 @@ public class SecurityConfig {
         http.authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/login", "/users/pre-registration").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/users/email/{email}/redefine-password").permitAll()
+
+                        .requestMatchers(HttpMethod.GET, "/patients/{id}", "/appointments/**", "/exams/**")
+                                        .hasAnyAuthority("SCOPE_ADMIN", "SCOPE_MEDICO", "SCOPE_PACIENTE")
+
+                        .requestMatchers("/patients/**", "/appointments/**", "/exams/**", "/dashboard/**")
+                                        .hasAnyAuthority("SCOPE_ADMIN", "SCOPE_MEDICO")
+
+                        .requestMatchers("/**").hasAuthority("SCOPE_ADMIN")
                         .anyRequest().authenticated())
                 .csrf(AbstractHttpConfigurer::disable)
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))

@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,10 +21,10 @@ public class DashboardController {
     private static final Logger logger = LoggerFactory.getLogger(DashboardController.class);
 
     @GetMapping("/stats")
-    public ResponseEntity<DashboardResponseDTO> getDashboardStats() {
+    public ResponseEntity<DashboardResponseDTO> getDashboardStats(@RequestHeader("Authorization") String token) {
         logger.info("Entering getDashboardStats");
 
-        DashboardResponseDTO dashboardResponseDTO = dashboardService.getDashboardStats();
+        DashboardResponseDTO dashboardResponseDTO = dashboardService.getDashboardStats(token);
 
         logger.info("""
             Results ->

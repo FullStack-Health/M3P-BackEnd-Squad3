@@ -27,5 +27,5 @@ public class PartialUserRequestDTO {
 
     @Schema(description = "User roleName")
     @NotNull(message = "O perfil é obrigatório")
-    private AllowedRoles role;
+    private AllowedRoles roleName;
 }

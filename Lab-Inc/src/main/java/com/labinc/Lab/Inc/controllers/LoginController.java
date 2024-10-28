@@ -29,8 +29,21 @@ public class LoginController {
     public ResponseEntity<LoginResponseDTO> generateToken(@Valid @RequestBody LoginRequestDTO loginRequest) {
         User user = userService.validateUser(loginRequest);
         Instant now = Instant.now();
-        String scope = user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(" "));
-        JwtClaimsSet claims = JwtClaimsSet.builder().issuer("self").issuedAt(now).expiresAt(now.plusSeconds(EXPIRATION_TIME)).subject(user.getUsername()).claim("scope", scope).build();
+
+        String scope = user
+                .getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(" "));
+
+        JwtClaimsSet claims = JwtClaimsSet.builder()
+                .issuer("self")
+                .issuedAt(now)
+                .expiresAt(now.plusSeconds(EXPIRATION_TIME))
+                .subject(user.getUsername())
+                .claim("scope", scope)
+                .build();
+
         var jwtValue = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
         return ResponseEntity.ok(new LoginResponseDTO(jwtValue, EXPIRATION_TIME));
     }
