@@ -5,8 +5,9 @@ import org.springframework.security.core.GrantedAuthority;
 
 @JsonDeserialize(using = AllowedRolesDeserializer.class)
 public enum AllowedRoles implements GrantedAuthority {
-    ROLE_ADMIN,
-    ROLE_MEDICO;
+    ADMIN,
+    MEDICO,
+    PACIENTE;
 
     @Override
     public String getAuthority() {

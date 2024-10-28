@@ -56,7 +56,7 @@ public class UserMapper {
         target.setEmail(source.getEmail());
         target.setBirthdate(LocalDate.parse("0001-01-01"));
         target.setCpf(String.valueOf(new Random().nextInt(999999999) + 1));
-        target.setRoleName(source.getRole());
+        target.setRoleName(source.getRoleName());
         target.setPhone("(00) 0 0000-0000");
         return target;
     }
