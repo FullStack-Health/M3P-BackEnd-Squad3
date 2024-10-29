@@ -15,6 +15,8 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 
     boolean existsByPatient_Id(Long id);
 
+    Page<Appointment> findByPatientId(@Param("patientId") Long patientId, Pageable pageable);
+
     @Query("SELECT a FROM Appointment a WHERE a.patient.id = :patientId AND " +
             "(:reason IS NULL OR LOWER(a.reason) LIKE LOWER(CONCAT('%', :reason, '%')))")
     Page<Appointment> findByPatientIdAndReasonContaining(
