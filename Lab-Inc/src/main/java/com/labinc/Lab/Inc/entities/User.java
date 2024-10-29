@@ -19,6 +19,7 @@ import java.util.Collections;
 @NoArgsConstructor
 public class User implements UserDetails {
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private AllowedRoles roleName;
 
@@ -34,20 +35,19 @@ public class User implements UserDetails {
     @Column(nullable = false, unique = true, length = 255)
     private String email;
 
-    @Column(nullable = false)
+    @Column
     private LocalDate birthdate;
 
-    @Column(nullable = false, unique = true, length = 14)
+    @Column(unique = true, length = 14)
     private String cpf;
 
-    @Column(nullable = false)
+    @Column
     private String phone;
 
     public String getPasswordMasked(String password) {
         if (password == null || password.length() <= 4) {
-            return password; // Retorna a senha original se for nula ou menor ou igual a 4 caracteres
+            return password;
         }
-        // Mostra os 4 primeiros caracteres e substitui o restante por '*'
         return password.substring(0, 4) + "*".repeat(password.length() - 4);
     }
 

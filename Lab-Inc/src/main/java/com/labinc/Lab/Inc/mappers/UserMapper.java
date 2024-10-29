@@ -8,9 +8,6 @@ import com.labinc.Lab.Inc.repositories.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
-import java.util.Random;
-
 @Component
 public class UserMapper {
 
@@ -52,12 +49,11 @@ public class UserMapper {
 
     public User toUser(PartialUserRequestDTO source) {
         User target = new User();
-        target.setFullName("-");
+        target.setFullName(source.getFullName());
         target.setEmail(source.getEmail());
-        target.setBirthdate(LocalDate.parse("0001-01-01"));
-        target.setCpf(String.valueOf(new Random().nextInt(999999999) + 1));
         target.setRoleName(source.getRoleName());
-        target.setPhone("(00) 0 0000-0000");
+        target.setPassword(source.getPassword());
         return target;
     }
+
 }

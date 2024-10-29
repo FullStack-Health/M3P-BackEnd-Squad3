@@ -113,9 +113,16 @@ public class AppointmentService {
     public Page<AppointmentResponseDTO> getAppointmentsByPatientIdAndReason(Long patientId,
                                                                             String reason,
                                                                             Pageable pageable) {
-        Page<Appointment> appointments = appointmentRepository.findByPatientIdAndReasonContaining(patientId, reason, pageable);
+        Page<Appointment> appointments;
+
+        if (reason == null || reason.isEmpty()) {
+            appointments = appointmentRepository.findByPatientId(patientId, pageable);
+        } else {
+            appointments = appointmentRepository.findByPatientIdAndReasonContaining(patientId, reason, pageable);
+        }
         return appointments.map(appointmentMapper::toResponseDTO);
     }
+
 
 
     public Appointment getAppointmentById(Long appointmentId) throws ChangeSetPersister.NotFoundException {

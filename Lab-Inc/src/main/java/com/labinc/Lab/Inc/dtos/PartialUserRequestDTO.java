@@ -28,4 +28,9 @@ public class PartialUserRequestDTO {
     @Schema(description = "User roleName")
     @NotNull(message = "O perfil é obrigatório")
     private AllowedRoles roleName;
+
+    @Schema(description = "User FullName")
+    @NotBlank(message = "Nome completo é obrigatório")
+    @Size(max = 255, message = "O nome completo deve ter no máximo 255 caracteres")
+    private String fullName;
 }

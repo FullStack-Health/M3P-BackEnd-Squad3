@@ -145,16 +145,18 @@ public class UserService {
     }
 
     public UserResponseDTO preRegisterUser(PartialUserRequestDTO userRequest) {
+
         if (userRepository.findByEmail(userRequest.getEmail()).isPresent()) {
             throw new DuplicateKeyException("E-mail já cadastrado: " + userRequest.getEmail());
         } else {
+
             User user = userMapper.toUser(userRequest);
-            if (userRepository.findByCpf(user.getCpf()).isPresent()) {
-                throw new DuplicateKeyException("CPF já cadastrado: " + user.getCpf());
-            }
+
             user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
             user.setPasswordMasked(user.getPasswordMasked(userRequest.getPassword()));
+
             return userMapper.toResponseDTO(userRepository.save(user));
         }
     }
+
 }

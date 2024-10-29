@@ -16,6 +16,7 @@ public class AppointmentMapper {
         appointment.setProblemDescrip(dto.getProblemDescrip());
         appointment.setPrescMed(dto.getPrescMed());
         appointment.setDosagesPrec(dto.getDosagesPrec());
+        appointment.setPatient(patient);
         return appointment;
     }
 

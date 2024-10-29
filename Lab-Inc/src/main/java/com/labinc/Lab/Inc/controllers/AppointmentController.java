@@ -2,10 +2,8 @@ package com.labinc.Lab.Inc.controllers;
 
 import com.labinc.Lab.Inc.dtos.AppointmentRequestDTO;
 import com.labinc.Lab.Inc.dtos.AppointmentResponseDTO;
-import com.labinc.Lab.Inc.entities.Appointment;
 import com.labinc.Lab.Inc.mappers.AppointmentMapper;
 import com.labinc.Lab.Inc.services.AppointmentService;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.apache.coyote.BadRequestException;
 import org.slf4j.LoggerFactory;
@@ -19,9 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import org.slf4j.Logger;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/appointments")
@@ -73,7 +68,5 @@ public class AppointmentController {
         Page<AppointmentResponseDTO> appointments = appointmentService.getAppointmentsByPatientIdAndReason(patientId, reason, pageable);
         return ResponseEntity.ok(appointments);
     }
-
-
 
 }
