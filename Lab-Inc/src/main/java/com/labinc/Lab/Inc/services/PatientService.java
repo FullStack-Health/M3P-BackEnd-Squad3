@@ -113,12 +113,22 @@ public class PatientService {
     }
 
     @Transactional(readOnly = true)
-    public Page<PatientResponseDTO> listPatients(Pageable pageable) {
+    public Page<PatientResponseDTO> listPatients(String fullName, String phone, String email, Pageable pageable) {
 
         //  TODO: Fazer Verificação Código401(Unauthorized)- Falha de autenticação.
-        //  TODO: Criar  Parâmetros de query: nome, telefone, e-mail.(Opcional)
 
-        Page<Patient> result = patientRepository.findAll(pageable);
+        Page<Patient> result;
+
+        if (fullName != null && !fullName.isEmpty()) {
+            result = patientRepository.findByFullNameContainingIgnoreCase(fullName, pageable);
+        } else if (phone != null && !phone.isEmpty()) {
+            String normalizedPhone = phone.replaceAll("[^\\d]", "");
+            result = patientRepository.findByPhoneContaining(normalizedPhone, pageable);
+        } else if (email != null && !email.isEmpty()) {
+            result = patientRepository.findByEmailIgnoreCase(email, pageable);
+        } else {
+            result = patientRepository.findAll(pageable);
+        }
         return result.map(PatientResponseDTO::new);
     }
 

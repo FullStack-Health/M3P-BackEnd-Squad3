@@ -1,7 +1,10 @@
 package com.labinc.Lab.Inc.repositories;
 
 import com.labinc.Lab.Inc.entities.Patient;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 
 public interface PatientRepository extends JpaRepository<Patient, Long> {
@@ -11,4 +14,11 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
     boolean existsByRg(String rg);
 
     boolean existsByEmail(String email);
+
+    Page<Patient> findByFullNameContainingIgnoreCase(String fullName, Pageable pageable);
+
+    @Query("SELECT p FROM Patient p WHERE REPLACE(REPLACE(REPLACE(p.phone, '-', ''), ' ', ''), '(', '') LIKE %:phone%")
+    Page<Patient> findByPhoneContaining(String phone, Pageable pageable);
+
+    Page<Patient> findByEmailIgnoreCase(String email, Pageable pageable);
 }

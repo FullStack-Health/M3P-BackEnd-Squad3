@@ -5,6 +5,7 @@ import com.labinc.Lab.Inc.dtos.PatientResponseDTO;
 import com.labinc.Lab.Inc.services.PatientService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -41,8 +42,16 @@ public class PatientController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<PatientResponseDTO>> listPatients(Pageable pageable) {
-        Page<PatientResponseDTO> patientResponseDTO = patientService.listPatients(pageable);
+    public ResponseEntity<Page<PatientResponseDTO>> listPatients(
+            @RequestParam(required = false) String fullName,
+            @RequestParam(required = false) String phone,
+            @RequestParam(required = false) String email,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<PatientResponseDTO> patientResponseDTO = patientService.listPatients(fullName, phone, email, pageable);
         return ResponseEntity.ok(patientResponseDTO);
     }
 
