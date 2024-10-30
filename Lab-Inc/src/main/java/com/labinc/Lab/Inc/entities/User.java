@@ -48,7 +48,7 @@ public class User implements UserDetails {
         if (password == null || password.length() <= 4) {
             return password;
         }
-        return password.substring(0, 4) + "*".repeat(password.length() - 4);
+        return password.substring(0, 4) + "**";
     }
 
     @Column(nullable = false, length = 255)
