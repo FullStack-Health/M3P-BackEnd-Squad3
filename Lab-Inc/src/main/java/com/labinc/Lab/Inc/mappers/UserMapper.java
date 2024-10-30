@@ -4,15 +4,10 @@ import com.labinc.Lab.Inc.dtos.PartialUserRequestDTO;
 import com.labinc.Lab.Inc.dtos.UserRequestDTO;
 import com.labinc.Lab.Inc.dtos.UserResponseDTO;
 import com.labinc.Lab.Inc.entities.User;
-import com.labinc.Lab.Inc.repositories.RoleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserMapper {
-
-    @Autowired
-    private RoleRepository roleRepository;
 
     public User toUser(UserRequestDTO dto) {
         User user = new User();

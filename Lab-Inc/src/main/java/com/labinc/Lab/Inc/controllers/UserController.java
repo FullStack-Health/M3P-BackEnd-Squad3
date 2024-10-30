@@ -4,9 +4,6 @@ import com.labinc.Lab.Inc.dtos.PartialUserRequestDTO;
 import com.labinc.Lab.Inc.dtos.PasswordRequestDTO;
 import com.labinc.Lab.Inc.dtos.UserRequestDTO;
 import com.labinc.Lab.Inc.dtos.UserResponseDTO;
-import com.labinc.Lab.Inc.entities.AllowedRoles;
-import com.labinc.Lab.Inc.repositories.RoleRepository;
-import com.labinc.Lab.Inc.repositories.UserRepository;
 import com.labinc.Lab.Inc.services.UserService;
 import jakarta.validation.Valid;
 import org.apache.coyote.BadRequestException;
@@ -25,16 +22,12 @@ import org.slf4j.LoggerFactory;
 public class UserController {
 
     private final UserService userService;
-    private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
-    public UserController(UserService userService, UserRepository userRepository, RoleRepository roleRepository) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
     }
 
     @PostMapping

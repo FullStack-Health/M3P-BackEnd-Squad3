@@ -4,7 +4,6 @@ import com.labinc.Lab.Inc.controllers.handlers.ConflictException;
 import com.labinc.Lab.Inc.dtos.*;
 import com.labinc.Lab.Inc.entities.User;
 import com.labinc.Lab.Inc.mappers.UserMapper;
-import com.labinc.Lab.Inc.repositories.RoleRepository;
 import com.labinc.Lab.Inc.repositories.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.apache.coyote.BadRequestException;
@@ -22,15 +21,13 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
-    private final RoleRepository roleRepository;
     @Autowired(required = false)
     private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository, UserMapper userMapper, RoleRepository roleRepository) {
+    public UserService(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
-        this.roleRepository = roleRepository;
     }
 
     public UserResponseDTO saveUser(UserRequestDTO userRequestDTO) throws BadRequestException {
