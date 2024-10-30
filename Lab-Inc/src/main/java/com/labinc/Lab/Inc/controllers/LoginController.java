@@ -37,10 +37,10 @@ public class LoginController {
                 .collect(Collectors.joining(" "));
 
         JwtClaimsSet claims = JwtClaimsSet.builder()
-                .issuer("self")
+                .issuer("LabIncBackend")
                 .issuedAt(now)
                 .expiresAt(now.plusSeconds(EXPIRATION_TIME))
-                .subject(user.getUsername())
+                .subject(user.getFullName())
                 .claim("scope", scope)
                 .build();
 
