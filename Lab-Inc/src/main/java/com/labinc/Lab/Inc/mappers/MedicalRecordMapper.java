@@ -25,7 +25,30 @@ public class MedicalRecordMapper {
     public MedicalRecordResponseDTO toDto(Patient patient, List<Exam> exams, List<Appointment> appointments) {
         MedicalRecordResponseDTO dto = new MedicalRecordResponseDTO();
 
-        dto.setPatient(patientMapper.toResponseDTO(patient));
+        dto.setId(patient.getId());
+        dto.setFullName(patient.getFullName());
+        dto.setGender(patient.getGender());
+        dto.setBirthDate(patient.getBirthDate());
+        dto.setCpf(patient.getCpf());
+        dto.setRg(patient.getRg());
+        dto.setMaritalStatus(patient.getMaritalStatus());
+        dto.setPhone(patient.getPhone());
+        dto.setEmail(patient.getEmail());
+        dto.setPlaceOfBirth(patient.getPlaceOfBirth());
+        dto.setEmergencyContact(patient.getEmergencyContact());
+        dto.setListOfAllergies(patient.getListOfAllergies());
+        dto.setListCare(patient.getListCare());
+        dto.setHealthInsurance(patient.getHealthInsurance());
+        dto.setHealthInsuranceNumber(patient.getHealthInsuranceNumber());
+        dto.setHealthInsuranceVal(patient.getHealthInsuranceVal());
+        dto.setZipcode(patient.getZipcode());
+        dto.setStreet(patient.getStreet());
+        dto.setAddressNumber(patient.getAddressNumber());
+        dto.setNeighborhood(patient.getNeighborhood());
+        dto.setCity(patient.getCity());
+        dto.setState(patient.getState());
+        dto.setComplement(patient.getComplement());
+        dto.setReferencePoint(patient.getReferencePoint());
 
         if (exams != null) {
             dto.setExams(exams.stream().map(examMapper::toResponseDTO).collect(Collectors.toList()));
