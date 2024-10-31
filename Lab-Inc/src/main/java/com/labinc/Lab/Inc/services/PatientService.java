@@ -38,8 +38,6 @@ public class PatientService {
     @Transactional
     public PatientResponseDTO newPatient(PatientRequestDTO patientRequestDTO) {
 
-        // TODO: Fazer Verificação Código401(Unauthorized)- Falha de autenticação.
-
         // Verifica se CPF já existe
         if (patientRepository.existsByCpf(patientRequestDTO.getCpf())) {
             throw new ResourceAlreadyExistsException("O CPF já está cadastrado: " + patientRequestDTO.getCpf());
@@ -90,7 +88,7 @@ public class PatientService {
         user.setPassword(passwordEncoder.encode(patient.getCpf()));// Configura a senha como o CPF encriptado
         user.setPasswordMasked(user.getPasswordMasked(patient.getCpf()));
         user.setPhone(patient.getPhone());
-        user.setRoleName(AllowedRoles.PACIENTE); // Define o perfil como "PACIENTE"
+        user.setRoleName(AllowedRoles.SCOPE_PACIENTE); // Define o perfil como "PACIENTE"
         userRepository.save(user); // Salva o usuário
 
         return new PatientResponseDTO(patient);
@@ -98,8 +96,6 @@ public class PatientService {
 
     @Transactional(readOnly = true)
     public PatientResponseDTO patientById(Long id) {
-
-        //  TODO: Fazer Verificação Código401(Unauthorized)- Falha de autenticação.
 
         Patient patient = patientRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Paciente não encontrado com o id " + id)
@@ -109,8 +105,6 @@ public class PatientService {
 
     @Transactional(readOnly = true)
     public Page<PatientResponseDTO> listPatients(String fullName, String phone, String email, Pageable pageable) {
-
-        //  TODO: Fazer Verificação Código401(Unauthorized)- Falha de autenticação.
 
         Page<Patient> result;
 
@@ -130,8 +124,6 @@ public class PatientService {
     @Transactional
     public PatientResponseDTO updatePatient(Long id, PatientRequestDTO patientRequestDTO) {
 
-        //  TODO: Fazer Verificação Código401(Unauthorized)- Falha de autenticação.
-
         Patient patient = patientRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Paciente com ID: " + id + " não encontrado."));
 
@@ -144,8 +136,6 @@ public class PatientService {
 
     @Transactional(propagation = Propagation.SUPPORTS)
     public void deletePatient(Long id){
-
-        //  TODO: Fazer Verificação Código401(Unauthorized)- Falha de autenticação.
 
         if (!patientRepository.existsById(id)) {
             throw new ResourceNotFoundException("Paciente com ID: " + id + " não encontrado.");
