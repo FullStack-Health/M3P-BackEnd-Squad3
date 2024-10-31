@@ -34,7 +34,7 @@ public class DashboardService {
 
         Jwt tokenDecodificado = jwtDecoder.decode(token.split(" ")[1]);
 
-        if ("ADMIN".equals(tokenDecodificado.getClaim("scope"))) {
+        if ("SCOPE_ADMIN".equals(tokenDecodificado.getClaim("scope"))) {
         dashboardResponseDTO.setCountUsers(userRepository.count());
         } else {
             dashboardResponseDTO.setCountUsers(null);
