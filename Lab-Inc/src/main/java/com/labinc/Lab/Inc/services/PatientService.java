@@ -38,6 +38,8 @@ public class PatientService {
     @Transactional
     public PatientResponseDTO newPatient(PatientRequestDTO patientRequestDTO) {
 
+        // TODO: Fazer Verificação Código401(Unauthorized)- Falha de autenticação.
+
         // Verifica se CPF já existe
         if (patientRepository.existsByCpf(patientRequestDTO.getCpf())) {
             throw new ResourceAlreadyExistsException("O CPF já está cadastrado: " + patientRequestDTO.getCpf());
@@ -52,6 +54,18 @@ public class PatientService {
         if (patientRepository.existsByEmail(patientRequestDTO.getEmail())) {
             throw new ResourceAlreadyExistsException("O Email já está cadastrado: " + patientRequestDTO.getEmail());
         }
+
+        // Cria e salva o usuário do tipo "PACIENTE" correspondente ao paciente
+        User user = new User();
+        user.setFullName(patientRequestDTO.getFullName());
+        user.setEmail(patientRequestDTO.getEmail());
+        user.setBirthdate(patientRequestDTO.getBirthDate());
+        user.setCpf(patientRequestDTO.getCpf());
+        user.setPassword(passwordEncoder.encode(patientRequestDTO.getCpf())); // Configura a senha como o CPF encriptado
+        user.setPasswordMasked(user.getPasswordMasked(patientRequestDTO.getCpf()));
+        user.setPhone(patientRequestDTO.getPhone());
+        user.setRoleName(AllowedRoles.SCOPE_PACIENTE); // Define o perfil como "PACIENTE"
+        userRepository.save(user); // Salva o usuário
 
         Patient patient = new Patient();
         patient.setFullName(patientRequestDTO.getFullName());
@@ -77,25 +91,17 @@ public class PatientService {
         patient.setState(patientRequestDTO.getState());
         patient.setComplement(patientRequestDTO.getComplement());
         patient.setReferencePoint(patientRequestDTO.getReferencePoint());
-        patient = patientRepository.save(patient);
+        patient.setUser(user); // Associa o usuário ao paciente
 
-        // Cria e salva o usuário do tipo "PACIENTE" correspondente ao paciente
-        User user = new User();
-        user.setFullName(patient.getFullName());
-        user.setEmail(patient.getEmail());
-        user.setBirthdate(patient.getBirthDate());
-        user.setCpf(patient.getCpf());
-        user.setPassword(passwordEncoder.encode(patient.getCpf()));// Configura a senha como o CPF encriptado
-        user.setPasswordMasked(user.getPasswordMasked(patient.getCpf()));
-        user.setPhone(patient.getPhone());
-        user.setRoleName(AllowedRoles.SCOPE_PACIENTE); // Define o perfil como "PACIENTE"
-        userRepository.save(user); // Salva o usuário
+        patient = patientRepository.save(patient);
 
         return new PatientResponseDTO(patient);
     }
 
     @Transactional(readOnly = true)
     public PatientResponseDTO patientById(Long id) {
+
+        //  TODO: Fazer Verificação Código401(Unauthorized)- Falha de autenticação.
 
         Patient patient = patientRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Paciente não encontrado com o id " + id)
@@ -105,6 +111,8 @@ public class PatientService {
 
     @Transactional(readOnly = true)
     public Page<PatientResponseDTO> listPatients(String fullName, String phone, String email, Pageable pageable) {
+
+        //  TODO: Fazer Verificação Código401(Unauthorized)- Falha de autenticação.
 
         Page<Patient> result;
 
@@ -124,6 +132,8 @@ public class PatientService {
     @Transactional
     public PatientResponseDTO updatePatient(Long id, PatientRequestDTO patientRequestDTO) {
 
+        //  TODO: Fazer Verificação Código401(Unauthorized)- Falha de autenticação.
+
         Patient patient = patientRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Paciente com ID: " + id + " não encontrado."));
 
@@ -136,6 +146,8 @@ public class PatientService {
 
     @Transactional(propagation = Propagation.SUPPORTS)
     public void deletePatient(Long id){
+
+        //  TODO: Fazer Verificação Código401(Unauthorized)- Falha de autenticação.
 
         if (!patientRepository.existsById(id)) {
             throw new ResourceNotFoundException("Paciente com ID: " + id + " não encontrado.");

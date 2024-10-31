@@ -50,6 +50,8 @@ public class SecurityConfig {
 
                         .requestMatchers("/patients/**", "/appointments/**", "/exams/**", "/dashboard/**")
                                         .hasAnyAuthority("SCOPE_ADMIN", "SCOPE_MEDICO")
+                        .requestMatchers(HttpMethod.GET, "/medical-record/{id}").authenticated()
+                // a lógica referente as permissões de acesso do endpoint medical-record/id está configurada no controller
 
                         .requestMatchers("/**").hasAuthority("SCOPE_ADMIN")
                         .anyRequest().authenticated())

@@ -1,6 +1,5 @@
 package com.labinc.Lab.Inc.dtos;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -14,7 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PatientRequestDTO {
-    @Schema(description = " Patient fullName")
+    @Schema(description = "Patient fullName")
     @NotBlank(message = "O nome completo é obrigatório")
     @Size(min = 8, max = 64, message = "O Nome completo deve ter entre 8 e 64 caracteres")
     private String fullName;
@@ -26,7 +25,6 @@ public class PatientRequestDTO {
     @Schema(description = "Patient birthDate")
     @NotNull(message = "A data de nascimento é obrigatória")
     @Past(message = "A data de nascimento deve estar no passado")
-    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate birthDate;
 
     @Schema(description = "Patient cpf")
@@ -74,7 +72,6 @@ public class PatientRequestDTO {
 
     @Schema(description = "Patient valInsurance")
     @Future(message = "A validade do plano de saúde deve estar no futuro")
-    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate healthInsuranceVal;
 
     @Schema(description = "Patient zipcode")

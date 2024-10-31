@@ -19,6 +19,10 @@ public class Patient {
     @Column(name = "patient_id")
     private Long id;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "userId")
+    private User user;
+
     @Column(nullable = false, length = 64)
     private String fullName;
 
@@ -62,11 +66,6 @@ public class Patient {
     private String neighborhood;
     private String city;
     private String state;
-    private String complement ;
+    private String complement;
     private String referencePoint;
-
-//    TODO: Ativar relacionamento após merge da feat/user
-//    @ManyToOne
-//    @JoinColumn(name = "user_id", nullable = false)
-//    private UserEntity user;
 }
