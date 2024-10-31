@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Optional;
+
 
 public interface PatientRepository extends JpaRepository<Patient, Long> {
 
@@ -23,4 +25,6 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
     Page<Patient> findByEmailIgnoreCase(String email, Pageable pageable);
 
     Patient findByUser_UserId (Long userId);
+
+    Page<Patient> findById (Long id, Pageable pageable);
 }
