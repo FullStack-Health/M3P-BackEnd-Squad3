@@ -2,13 +2,19 @@ package com.labinc.Lab.Inc.services;
 
 import com.labinc.Lab.Inc.dtos.PatientRequestDTO;
 import com.labinc.Lab.Inc.dtos.PatientResponseDTO;
+import com.labinc.Lab.Inc.entities.AllowedRoles;
 import com.labinc.Lab.Inc.entities.Patient;
+import com.labinc.Lab.Inc.entities.User;
 import com.labinc.Lab.Inc.mappers.PatientMapper;
+import com.labinc.Lab.Inc.mappers.UserMapper;
 import com.labinc.Lab.Inc.repositories.PatientRepository;
+import com.labinc.Lab.Inc.repositories.UserRepository;
 import com.labinc.Lab.Inc.services.exceptions.ResourceAlreadyExistsException;
 import com.labinc.Lab.Inc.services.exceptions.ResourceNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,15 +24,19 @@ import org.springframework.transaction.annotation.Transactional;
 public class PatientService {
 
     private final PatientRepository patientRepository;
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
-    public PatientService(PatientRepository patientRepository) {
+    public PatientService(PatientRepository patientRepository, UserRepository userRepository, UserMapper userMapper, BCryptPasswordEncoder passwordEncoder) {
         this.patientRepository = patientRepository;
+        this.userRepository = userRepository;
+        this.userMapper = userMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
     public PatientResponseDTO newPatient(PatientRequestDTO patientRequestDTO) {
-
-        // TODO: Fazer Verificação Código401(Unauthorized)- Falha de autenticação.
 
         // Verifica se CPF já existe
         if (patientRepository.existsByCpf(patientRequestDTO.getCpf())) {
@@ -43,7 +53,6 @@ public class PatientService {
             throw new ResourceAlreadyExistsException("O Email já está cadastrado: " + patientRequestDTO.getEmail());
         }
 
-        // Converter PatientRequestDTO para entidade Patient
         Patient patient = new Patient();
         patient.setFullName(patientRequestDTO.getFullName());
         patient.setGender(patientRequestDTO.getGender());
@@ -68,43 +77,25 @@ public class PatientService {
         patient.setState(patientRequestDTO.getState());
         patient.setComplement(patientRequestDTO.getComplement());
         patient.setReferencePoint(patientRequestDTO.getReferencePoint());
-
         patient = patientRepository.save(patient);
 
-        // Criar o DTO de resposta
-        PatientResponseDTO patientResponseDTO = new PatientResponseDTO(patient);
-        patientResponseDTO.setId(patient.getId());
-        patientResponseDTO.setFullName(patient.getFullName());
-        patientResponseDTO.setGender(patient.getGender());
-        patientResponseDTO.setBirthDate(patient.getBirthDate());
-        patientResponseDTO.setCpf(patient.getCpf());
-        patientResponseDTO.setRg(patient.getRg());
-        patientResponseDTO.setMaritalStatus(patient.getMaritalStatus());
-        patientResponseDTO.setPhone(patient.getPhone());
-        patientResponseDTO.setEmail(patient.getEmail());
-        patientResponseDTO.setPlaceOfBirth(patient.getPlaceOfBirth());
-        patientResponseDTO.setEmergencyContact(patient.getEmergencyContact());
-        patientResponseDTO.setListOfAllergies(patient.getListOfAllergies());
-        patientResponseDTO.setListCare(patient.getListCare());
-        patientResponseDTO.setHealthInsurance(patient.getHealthInsurance());
-        patientResponseDTO.setHealthInsuranceNumber(patient.getHealthInsuranceNumber());
-        patientResponseDTO.setHealthInsuranceVal(patient.getHealthInsuranceVal());
-        patientResponseDTO.setZipcode(patient.getZipcode());
-        patientResponseDTO.setStreet(patient.getStreet());
-        patientResponseDTO.setAddressNumber(patient.getAddressNumber());
-        patientResponseDTO.setNeighborhood(patient.getNeighborhood());
-        patientResponseDTO.setCity(patient.getCity());
-        patientResponseDTO.setState(patient.getState());
-        patientResponseDTO.setComplement(patient.getComplement());
-        patientResponseDTO.setReferencePoint(patient.getReferencePoint());
+        // Cria e salva o usuário do tipo "PACIENTE" correspondente ao paciente
+        User user = new User();
+        user.setFullName(patient.getFullName());
+        user.setEmail(patient.getEmail());
+        user.setBirthdate(patient.getBirthDate());
+        user.setCpf(patient.getCpf());
+        user.setPassword(passwordEncoder.encode(patient.getCpf()));// Configura a senha como o CPF encriptado
+        user.setPasswordMasked(user.getPasswordMasked(patient.getCpf()));
+        user.setPhone(patient.getPhone());
+        user.setRoleName(AllowedRoles.SCOPE_PACIENTE); // Define o perfil como "PACIENTE"
+        userRepository.save(user); // Salva o usuário
 
-        return patientResponseDTO;
+        return new PatientResponseDTO(patient);
     }
 
     @Transactional(readOnly = true)
     public PatientResponseDTO patientById(Long id) {
-
-        //  TODO: Fazer Verificação Código401(Unauthorized)- Falha de autenticação.
 
         Patient patient = patientRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Paciente não encontrado com o id " + id)
@@ -114,8 +105,6 @@ public class PatientService {
 
     @Transactional(readOnly = true)
     public Page<PatientResponseDTO> listPatients(String fullName, String phone, String email, Pageable pageable) {
-
-        //  TODO: Fazer Verificação Código401(Unauthorized)- Falha de autenticação.
 
         Page<Patient> result;
 
@@ -135,8 +124,6 @@ public class PatientService {
     @Transactional
     public PatientResponseDTO updatePatient(Long id, PatientRequestDTO patientRequestDTO) {
 
-        //  TODO: Fazer Verificação Código401(Unauthorized)- Falha de autenticação.
-
         Patient patient = patientRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Paciente com ID: " + id + " não encontrado."));
 
@@ -149,8 +136,6 @@ public class PatientService {
 
     @Transactional(propagation = Propagation.SUPPORTS)
     public void deletePatient(Long id){
-
-        //  TODO: Fazer Verificação Código401(Unauthorized)- Falha de autenticação.
 
         if (!patientRepository.existsById(id)) {
             throw new ResourceNotFoundException("Paciente com ID: " + id + " não encontrado.");
