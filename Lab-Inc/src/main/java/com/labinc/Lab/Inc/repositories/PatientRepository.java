@@ -21,4 +21,6 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
     Page<Patient> findByPhoneContaining(String phone, Pageable pageable);
 
     Page<Patient> findByEmailIgnoreCase(String email, Pageable pageable);
+
+    Patient findByUser_UserId (Long userId);
 }
