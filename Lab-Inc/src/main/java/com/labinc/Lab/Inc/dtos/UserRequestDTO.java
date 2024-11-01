@@ -19,6 +19,7 @@ public class UserRequestDTO {
     @NotNull(message = "roleName is required")
     private AllowedRoles roleName;
 
+    @NotNull(message = "userId is required")
     private Long userId;
 
     @NotBlank(message = "fullName is required")
@@ -31,16 +32,12 @@ public class UserRequestDTO {
     @NotNull(message = "birthdate is required")
     private LocalDate birthdate;
 
-    @NotNull
+    @NotNull(message = "cpf is required")
     @Size(max = 255)
     @JsonFormat(pattern = "000.000.000-00")
     private String cpf;
 
-    @NotBlank
-    @Size(max = 255)
-    private String password;
-
-    @NotBlank
+    @NotBlank(message = "phone is required")
     @Pattern(regexp = "\\(\\d{2}\\) \\d \\d{4}-\\d{4}", message = "O telefone deve estar no formato (99) 9 9999-9999")
     private String phone;
 }

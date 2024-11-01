@@ -23,11 +23,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT u FROM User u WHERE " +
             "(:userId IS NULL OR u.userId = :userId) AND " +
-            "(:email IS NULL OR LOWER(u.email) = LOWER(:email)) AND " +
-            "(:fullName IS NULL OR LOWER(u.fullName) LIKE LOWER(CONCAT('%', :fullName, '%')))")
-    Page<User> findByUserIdAndEmailAndFullNameContaining(
+            "(:email IS NULL OR LOWER(u.email) = LOWER(:email))")
+    Page<User> findByUserIdAndEmail(
             @Param("userId") Long userId,
-            @Param("fullName") String fullName,
             @Param("email") String email,
             Pageable pageable);
 

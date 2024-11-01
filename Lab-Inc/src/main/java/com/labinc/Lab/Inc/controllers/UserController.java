@@ -30,13 +30,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping
-    public ResponseEntity<UserResponseDTO> createUser(@Valid @RequestBody UserRequestDTO userRequestDTO) throws BadRequestException {
-        logger.debug("Creating user with role: {}", userRequestDTO.getRoleName());
-        UserResponseDTO savedUser = userService.saveUser(userRequestDTO);
-        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
-    }
-
 
     @PutMapping("/{userId}")
     public ResponseEntity<UserResponseDTO> updateUser(@PathVariable Long userId,  @Valid @RequestBody UserRequestDTO userRequestDTO) throws BadRequestException {
