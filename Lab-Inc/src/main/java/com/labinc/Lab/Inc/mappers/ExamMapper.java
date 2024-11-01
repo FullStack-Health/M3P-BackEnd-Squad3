@@ -20,7 +20,7 @@ public class ExamMapper {
 
     public ExamResponseDTO toResponseDTO(Exam exam) {
         ExamResponseDTO dto = new ExamResponseDTO();
-        dto.setId(exam.getId());
+        dto.setExamId(exam.getExamId());
         dto.setExamName(exam.getExamName());
         dto.setExamDate(exam.getExamDate());
         dto.setExamTime(exam.getExamTime());

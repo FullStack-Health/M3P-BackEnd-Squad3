@@ -16,18 +16,16 @@ import java.time.LocalTime;
 @AllArgsConstructor
 public class ExamResponseDTO {
 
-    @Schema(description = " Exam examName")
-    private Long id;
+    @Schema(description = " Exam examId")
+    private Long examId;
 
     @Schema(description = " Exam examName")
     private String examName;
 
     @Schema(description = " Exam examDate")
-    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate examDate;
 
     @Schema(description = " Exam examTime")
-    @JsonFormat(pattern = "HH:mm")
     private LocalTime examTime;
 
     @Schema(description = " Exam examType")
@@ -43,11 +41,14 @@ public class ExamResponseDTO {
     private String result;
 
     @Schema(description = " Exam patientId")
-    private Long patientId;
+    private Long id;
+
+    @Schema(description = " Exam patientFullName")
+    private String fullName;
 
 
     public ExamResponseDTO(Exam exam){
-        id = exam.getId();
+        examId = exam.getExamId();
         examName = exam.getExamName();
         examDate = exam.getExamDate();
         examTime = exam.getExamTime();
@@ -55,7 +56,8 @@ public class ExamResponseDTO {
         lab = exam.getLab();
         docUrl = exam.getDocUrl();
         result = exam.getResult();
-        patientId = exam.getPatient().getId();
+        id = exam.getPatient().getId();
+        fullName = exam.getPatient().getFullName();
     }
 
 }
