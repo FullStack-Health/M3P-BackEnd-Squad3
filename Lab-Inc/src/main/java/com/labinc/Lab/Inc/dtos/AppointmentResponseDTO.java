@@ -11,6 +11,8 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AppointmentResponseDTO {
+        private Long id;
+        private String fullName;
         private Long appointmentId;
         private String reason;
         private LocalDate consultDate;

@@ -1,6 +1,5 @@
 package com.labinc.Lab.Inc.dtos;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -23,11 +22,9 @@ public class AppointmentRequestDTO {
     private String reason;
 
     @NotNull(message = "Consult date is required")
-    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate consultDate;
 
     @NotNull(message = "Consult time is required")
-    @JsonFormat(pattern = "HH:mm")
     private LocalTime consultTime;
 
     @NotBlank(message = "Problem description is required")
