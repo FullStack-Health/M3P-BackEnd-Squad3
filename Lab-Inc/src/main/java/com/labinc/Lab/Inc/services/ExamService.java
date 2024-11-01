@@ -27,12 +27,12 @@ public class ExamService {
 
     @Transactional
     public ExamResponseDTO newExam(ExamRequestDTO examRequestDTO){
-        if (examRequestDTO.getPatientId() == null){
+        if (examRequestDTO.getId() == null){
             throw new IllegalArgumentException("ID do paciente é obrigatório");
         }
 
-        Patient patient = patientRepository.findById(examRequestDTO.getPatientId())
-                .orElseThrow(() -> new ResourceNotFoundException("Paciente com ID: " + examRequestDTO.getPatientId() + " não encontrado."));
+        Patient patient = patientRepository.findById(examRequestDTO.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Paciente com ID: " + examRequestDTO.getId() + " não encontrado."));
 
         Exam exam = new Exam();
         exam.setExamName(examRequestDTO.getExamName());

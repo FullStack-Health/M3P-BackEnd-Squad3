@@ -46,12 +46,13 @@ public class PatientController {
             @RequestParam(required = false) String fullName,
             @RequestParam(required = false) String phone,
             @RequestParam(required = false) String email,
+            @RequestParam(required = false) Long id,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
 
         Pageable pageable = PageRequest.of(page, size);
 
-        Page<PatientResponseDTO> patientResponseDTO = patientService.listPatients(fullName, phone, email, pageable);
+        Page<PatientResponseDTO> patientResponseDTO = patientService.listPatients(fullName, phone, email, id, pageable);
         return ResponseEntity.ok(patientResponseDTO);
     }
 

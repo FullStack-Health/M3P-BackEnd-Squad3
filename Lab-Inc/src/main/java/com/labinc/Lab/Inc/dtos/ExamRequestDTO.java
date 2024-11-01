@@ -1,6 +1,5 @@
 package com.labinc.Lab.Inc.dtos;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -25,12 +24,10 @@ public class ExamRequestDTO {
 
     @Schema(description = "Exam examDate")
     @NotNull(message = "A data do exame é obrigatória")
-    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate examDate;
 
     @Schema(description = "Exam examTime")
     @NotNull(message = "A Hora do exame é obrigatória")
-    @JsonFormat(pattern = "HH:mm")
     private LocalTime examTime;
 
     @Schema(description = "Exam examType")
@@ -49,5 +46,5 @@ public class ExamRequestDTO {
     private String result;
 
     @Schema(description = "Exam patientId")
-    private Long patientId;
+    private Long id;
 }

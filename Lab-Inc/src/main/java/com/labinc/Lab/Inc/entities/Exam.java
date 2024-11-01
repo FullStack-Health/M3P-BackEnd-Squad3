@@ -17,7 +17,7 @@ public class Exam {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long examId;
 
     @Column(nullable = false, length = 64)
     private String examName;
@@ -40,6 +40,6 @@ public class Exam {
     private String result;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "patient_id", nullable = false)
+    @JoinColumn(name = "patient_id", referencedColumnName = "patient_id")
     private Patient patient;
 }
