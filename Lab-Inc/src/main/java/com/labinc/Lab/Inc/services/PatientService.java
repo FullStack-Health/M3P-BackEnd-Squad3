@@ -6,7 +6,6 @@ import com.labinc.Lab.Inc.entities.AllowedRoles;
 import com.labinc.Lab.Inc.entities.Patient;
 import com.labinc.Lab.Inc.entities.User;
 import com.labinc.Lab.Inc.mappers.PatientMapper;
-import com.labinc.Lab.Inc.mappers.UserMapper;
 import com.labinc.Lab.Inc.repositories.PatientRepository;
 import com.labinc.Lab.Inc.repositories.UserRepository;
 import com.labinc.Lab.Inc.services.exceptions.ResourceAlreadyExistsException;
@@ -25,20 +24,16 @@ public class PatientService {
 
     private final PatientRepository patientRepository;
     private final UserRepository userRepository;
-    private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
-    public PatientService(PatientRepository patientRepository, UserRepository userRepository, UserMapper userMapper, BCryptPasswordEncoder passwordEncoder) {
+    public PatientService(PatientRepository patientRepository, UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
         this.patientRepository = patientRepository;
         this.userRepository = userRepository;
-        this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
     public PatientResponseDTO newPatient(PatientRequestDTO patientRequestDTO) {
-
-        // TODO: Fazer Verificação Código401(Unauthorized)- Falha de autenticação.
 
         // Verifica se CPF já existe
         if (patientRepository.existsByCpf(patientRequestDTO.getCpf())) {
@@ -101,8 +96,6 @@ public class PatientService {
     @Transactional(readOnly = true)
     public PatientResponseDTO patientById(Long id) {
 
-        //  TODO: Fazer Verificação Código401(Unauthorized)- Falha de autenticação.
-
         Patient patient = patientRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Paciente não encontrado com o id " + id)
         );
@@ -111,8 +104,6 @@ public class PatientService {
 
     @Transactional(readOnly = true)
     public Page<PatientResponseDTO> listPatients(String fullName, String phone, String email, Pageable pageable) {
-
-        //  TODO: Fazer Verificação Código401(Unauthorized)- Falha de autenticação.
 
         Page<Patient> result;
 
@@ -132,8 +123,6 @@ public class PatientService {
     @Transactional
     public PatientResponseDTO updatePatient(Long id, PatientRequestDTO patientRequestDTO) {
 
-        //  TODO: Fazer Verificação Código401(Unauthorized)- Falha de autenticação.
-
         Patient patient = patientRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Paciente com ID: " + id + " não encontrado."));
 
@@ -146,8 +135,6 @@ public class PatientService {
 
     @Transactional(propagation = Propagation.SUPPORTS)
     public void deletePatient(Long id){
-
-        //  TODO: Fazer Verificação Código401(Unauthorized)- Falha de autenticação.
 
         if (!patientRepository.existsById(id)) {
             throw new ResourceNotFoundException("Paciente com ID: " + id + " não encontrado.");
