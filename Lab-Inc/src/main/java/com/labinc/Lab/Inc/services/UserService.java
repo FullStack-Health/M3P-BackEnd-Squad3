@@ -57,13 +57,13 @@ public class UserService {
     }
 
     public Page<UserResponseDTO> getAllUsers(Long userId, String fullName, String email, Pageable pageable) {
-
-        if (userId == null && fullName == null && email == null) {
+        if (userId != null) {
+            return userRepository.findByUserIdWithPagination(userId, pageable).map(userMapper::toResponseDTO);
+        } else if (email != null) {
+            return userRepository.findByEmailWithPagination(email, pageable).map(userMapper::toResponseDTO);
+        } else {
             return userRepository.findAll(pageable).map(userMapper::toResponseDTO);
         }
-
-        Page<User> users = userRepository.findByUserIdAndEmail(userId, email, pageable);
-        return users.map(userMapper::toResponseDTO);
     }
 
     public UserResponseDTO getUserById(Long userId) {
