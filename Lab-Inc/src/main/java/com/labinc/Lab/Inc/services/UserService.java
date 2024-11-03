@@ -35,11 +35,11 @@ public class UserService {
                 "User not found"));
 
         if (userRepository.existsByCpf(userRequestDTO.getCpf()) && !user.getCpf().equals(userRequestDTO.getCpf())) {
-            throw new ConflictException("cpf already exists in another user record");
+            throw new DuplicateKeyException("cpf already exists in another user record");
         }
 
         if (userRepository.existsByEmail(userRequestDTO.getEmail()) && !user.getEmail().equals(userRequestDTO.getEmail())) {
-            throw new ConflictException("email already exists in another user record");
+            throw new DuplicateKeyException("email already exists in another user record");
         }
 
         userMapper.updateUserFromDto(user, userRequestDTO);
