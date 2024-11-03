@@ -13,23 +13,24 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "Dados de requisição parcial para criação de um usuário")
 public class PartialUserRequestDTO {
-    @Schema(description = "User email")
+    @Schema(description = "Email do usuário", requiredMode = Schema.RequiredMode.REQUIRED, example = "usuario@example.com")
     @Email(message = "O email deve ser válido")
     @NotBlank(message = "O email é obrigatório")
     @Size(max = 255, message = "O email deve ter no máximo 255 caracteres")
     private String email;
 
-    @Schema(description = "User password")
+    @Schema(description = "Senha do usuário", requiredMode = Schema.RequiredMode.REQUIRED, example = "senha123")
     @NotBlank(message = "A senha é obrigatória")
     @Size(max = 255, message = "A senha deve ter no máximo 255 caracteres")
     private String password;
 
-    @Schema(description = "User roleName")
+    @Schema(description = "Papel do usuário", requiredMode = Schema.RequiredMode.REQUIRED, example = "ADMIN")
     @NotNull(message = "O perfil é obrigatório")
     private AllowedRoles roleName;
 
-    @Schema(description = "User FullName")
+    @Schema(description = "Nome completo do usuário", requiredMode = Schema.RequiredMode.REQUIRED, example = "João da Silva")
     @NotBlank(message = "Nome completo é obrigatório")
     @Size(max = 255, message = "O nome completo deve ter no máximo 255 caracteres")
     private String fullName;
