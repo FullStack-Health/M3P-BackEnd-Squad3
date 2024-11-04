@@ -128,7 +128,7 @@ public class UserServiceTest {
         when(userRepository.findAll(any(Pageable.class))).thenReturn(new PageImpl<>(Collections.singletonList(user)));
         when(userMapper.toResponseDTO(any(User.class))).thenReturn(userResponseDTO);
 
-        Page<UserResponseDTO> response = userService.getAllUsers(null, null, null, Pageable.unpaged());
+        Page<UserResponseDTO> response = userService.getAllUsers(null, null, Pageable.unpaged());
 
         assertNotNull(response);
         assertEquals(1, response.getTotalElements());
