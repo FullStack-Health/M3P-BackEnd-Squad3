@@ -178,6 +178,10 @@ public class GlobalExceptionHandler {
             error.setFieldName("email");
         } else if (exception.getMessage().contains("CPF já cadastrado: ")) {
             error.setFieldName("cpf");
+        } else if (exception.getMessage().contains("cpf already exists in another user record")) {
+            error.setFieldName("cpf");
+        } else if (exception.getMessage().contains("email already exists in another user record")) {
+            error.setFieldName("email");
         }
         error.setMessage(exception.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(error);

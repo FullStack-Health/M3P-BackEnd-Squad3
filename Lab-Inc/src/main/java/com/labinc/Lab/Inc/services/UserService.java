@@ -30,70 +30,16 @@ public class UserService {
         this.userMapper = userMapper;
     }
 
-    public UserResponseDTO saveUser(UserRequestDTO userRequestDTO) throws BadRequestException {
-
-        if (userRequestDTO.getFullName() == null || userRequestDTO.getFullName().isEmpty()) {
-            throw new BadRequestException("name is mandatory");
-        }
-        if (userRequestDTO.getEmail() == null || userRequestDTO.getEmail().isEmpty()) {
-            throw new BadRequestException("email is mandatory");
-        }
-        if (userRequestDTO.getBirthdate() == null) {
-            throw new BadRequestException("birthdate is mandatory");
-        }
-        if (userRequestDTO.getCpf() == null || userRequestDTO.getCpf().isEmpty()) {
-            throw new BadRequestException("cpf is mandatory");
-        }
-        if (userRequestDTO.getPassword() == null || userRequestDTO.getPassword().isEmpty()) {
-            throw new BadRequestException("password is mandatory");
-        }
-        if (userRequestDTO.getPhone() == null || userRequestDTO.getPhone().isEmpty()) {
-            throw new BadRequestException("phone is mandatory");
-        }
-
-        if (userRepository.existsByCpf(userRequestDTO.getCpf())) {
-            throw new ConflictException("cpf already exists");
-        }
-        if (userRepository.existsByEmail(userRequestDTO.getEmail())) {
-            throw new ConflictException("email already exists");
-        }
-
-        User user = userMapper.toUser(userRequestDTO);
-        user.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
-        user.setPasswordMasked(user.getPasswordMasked(userRequestDTO.getPassword()));
-        User savedUser = userRepository.save(user);
-        return userMapper.toResponseDTO(savedUser);
-    }
-
     public UserResponseDTO updateUser(Long userId, UserRequestDTO userRequestDTO) throws BadRequestException {
         User user = userRepository.findByUserId(userId).orElseThrow(() -> new EntityNotFoundException(
                 "User not found"));
 
-        if (userRequestDTO.getFullName() == null || userRequestDTO.getFullName().isEmpty()) {
-            throw new BadRequestException("name is mandatory");
-        }
-        if (userRequestDTO.getEmail() == null || userRequestDTO.getEmail().isEmpty()) {
-            throw new BadRequestException("email is mandatory");
-        }
-        if (userRequestDTO.getBirthdate() == null) {
-            throw new BadRequestException("birthdate is mandatory");
-        }
-        if (userRequestDTO.getCpf() == null || userRequestDTO.getCpf().isEmpty()) {
-            throw new BadRequestException("cpf is mandatory");
-        }
-        if (userRequestDTO.getPassword() == null || userRequestDTO.getPassword().isEmpty()) {
-            throw new BadRequestException("password is mandatory");
-        }
-        if (userRequestDTO.getPhone() == null || userRequestDTO.getPhone().isEmpty()) {
-            throw new BadRequestException("phone is mandatory");
-        }
-
         if (userRepository.existsByCpf(userRequestDTO.getCpf()) && !user.getCpf().equals(userRequestDTO.getCpf())) {
-            throw new ConflictException("cpf already exists in another user record");
+            throw new DuplicateKeyException("cpf already exists in another user record");
         }
 
         if (userRepository.existsByEmail(userRequestDTO.getEmail()) && !user.getEmail().equals(userRequestDTO.getEmail())) {
-            throw new ConflictException("email already exists in another user record");
+            throw new DuplicateKeyException("email already exists in another user record");
         }
 
         userMapper.updateUserFromDto(user, userRequestDTO);
@@ -111,13 +57,13 @@ public class UserService {
     }
 
     public Page<UserResponseDTO> getAllUsers(Long userId, String fullName, String email, Pageable pageable) {
-
-        if (userId == null && fullName == null && email == null) {
+        if (userId != null) {
+            return userRepository.findByUserIdWithPagination(userId, pageable).map(userMapper::toResponseDTO);
+        } else if (email != null) {
+            return userRepository.findByEmailWithPagination(email, pageable).map(userMapper::toResponseDTO);
+        } else {
             return userRepository.findAll(pageable).map(userMapper::toResponseDTO);
         }
-
-        Page<User> users = userRepository.findByUserIdAndEmailAndFullNameContaining(userId, fullName, email, pageable);
-        return users.map(userMapper::toResponseDTO);
     }
 
     public UserResponseDTO getUserById(Long userId) {

@@ -36,21 +36,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping
-    @Operation(summary = "Cria um novo usuário", description = "Cria um novo usuário com base nos dados fornecidos")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Usuário criado com sucesso"),
-            @ApiResponse(responseCode = "400", description = "Requisição inválida, dados ausentes ou incorretos"),
-            @ApiResponse(responseCode = "401", description = "Falha de autenticação"),
-            @ApiResponse(responseCode = "409", description = "Conflito de dados, CPF ou Email já cadastrados")
-    })
-    public ResponseEntity<UserResponseDTO> createUser(@Valid @RequestBody UserRequestDTO userRequestDTO) throws BadRequestException {
-        logger.debug("Creating user with role: {}", userRequestDTO.getRoleName());
-        UserResponseDTO savedUser = userService.saveUser(userRequestDTO);
-        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
-    }
-
-
     @PutMapping("/{userId}")
     @Operation(summary = "Atualiza um usuário existente", description = "Atualiza os dados de um usuário existente com base no ID fornecido")
     @ApiResponses(value = {

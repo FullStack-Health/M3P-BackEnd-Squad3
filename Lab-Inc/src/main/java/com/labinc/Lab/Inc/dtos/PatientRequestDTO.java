@@ -43,7 +43,7 @@ public class PatientRequestDTO {
     private String maritalStatus;
 
     @Schema(description = "Telefone do paciente", example = "(48) 9 9856-2345")
-    @Pattern(regexp = "\\d{2}\\s\\d\\s\\d{4}-\\d{4}", message = "O telefone deve estar no formato (99) 9 9999-9999")
+    @Pattern(regexp = "\\(\\d{2}\\)\\s\\d\\s\\d{4}-\\d{4}", message = "O telefone deve estar no formato (99) 9 9999-9999")
     private String phone;
 
     @Schema(description = "E-mail do paciente", example = "carlos@teste.com")
@@ -56,7 +56,7 @@ public class PatientRequestDTO {
     private String placeOfBirth;
 
     @Schema(description = "Contato de emergência", example = "(48) 9 9856-1234")
-    @Pattern(regexp = "\\d{2}\\s\\d\\s\\d{4}-\\d{4}", message = "O telefone deve estar no formato (99) 9 9999-9999")
+    @Pattern(regexp = "\\(\\d{2}\\)\\s\\d\\s\\d{4}-\\d{4}", message = "O telefone deve estar no formato (99) 9 9999-9999")
     private String emergencyContact;
 
     @Schema(description = "Lista de alergias do paciente", example = "Nenhuma")

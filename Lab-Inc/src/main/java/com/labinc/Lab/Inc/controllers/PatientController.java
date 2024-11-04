@@ -67,15 +67,16 @@ public class PatientController {
             @ApiResponse(responseCode = "401", description = "Falha de autenticação")
     })
     public ResponseEntity<Page<PatientResponseDTO>> listPatients(
-            @Parameter(description = "Nome completo do paciente para pesquisa") @RequestParam(required = false) String fullName,
+            @Parameter(description = "Nome do paciente para pesquisa") @RequestParam(required = false) String fullName,
             @Parameter(description = "Telefone do paciente para pesquisa") @RequestParam(required = false) String phone,
             @Parameter(description = "Email do paciente para pesquisa") @RequestParam(required = false) String email,
+            @Parameter(description = "Id do paciente para pesquisa") @RequestParam(required = false) Long id,
             @Parameter(description = "Número da página para paginação") @RequestParam(defaultValue = "0") int page,
             @Parameter(description = "Tamanho da página para paginação") @RequestParam(defaultValue = "10") int size) {
 
         Pageable pageable = PageRequest.of(page, size);
 
-        Page<PatientResponseDTO> patientResponseDTO = patientService.listPatients(fullName, phone, email, pageable);
+        Page<PatientResponseDTO> patientResponseDTO = patientService.listPatients(fullName, phone, email, id, pageable);
         return ResponseEntity.ok(patientResponseDTO);
     }
 

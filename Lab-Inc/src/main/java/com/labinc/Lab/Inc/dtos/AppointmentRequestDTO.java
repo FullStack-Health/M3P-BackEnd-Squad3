@@ -1,6 +1,5 @@
 package com.labinc.Lab.Inc.dtos;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -29,12 +28,10 @@ public class AppointmentRequestDTO {
 
     @Schema(description = "Data da consulta", requiredMode = Schema.RequiredMode.REQUIRED, example = "15/10/2024")
     @NotNull(message = "Consult date is required")
-    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate consultDate;
 
     @Schema(description = "Hora da consulta", requiredMode = Schema.RequiredMode.REQUIRED, example = "14:30")
     @NotNull(message = "Consult time is required")
-    @JsonFormat(pattern = "HH:mm")
     private LocalTime consultTime;
 
     @Schema(description = "Descrição do problema", requiredMode = Schema.RequiredMode.REQUIRED, example = "Dor de cabeça persistente")

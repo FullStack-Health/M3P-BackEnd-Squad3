@@ -21,15 +21,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByUserId(Long userId);
 
-    @Query("SELECT u FROM User u WHERE " +
-            "(:userId IS NULL OR u.userId = :userId) AND " +
-            "(:email IS NULL OR LOWER(u.email) = LOWER(:email)) AND " +
-            "(:fullName IS NULL OR LOWER(u.fullName) LIKE LOWER(CONCAT('%', :fullName, '%')))")
-    Page<User> findByUserIdAndEmailAndFullNameContaining(
-            @Param("userId") Long userId,
-            @Param("fullName") String fullName,
-            @Param("email") String email,
-            Pageable pageable);
+    @Query("SELECT u FROM User u WHERE u.userId = :userId")
+    Page<User> findByUserIdWithPagination(@Param("userId") Long userId, Pageable pageable);
+
+    @Query("SELECT u FROM User u WHERE LOWER(u.email) = LOWER(:email)")
+    Page<User> findByEmailWithPagination(@Param("email") String email, Pageable pageable);
 
     Optional<User> findByCpf(String cpf);
 }

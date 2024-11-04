@@ -20,7 +20,7 @@ public class Exam {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Schema(description = "ID do exame", example = "1")
-    private Long id;
+    private Long examId;
 
     @Column(nullable = false, length = 64)
     @Schema(description = "Nome do exame", requiredMode = Schema.RequiredMode.REQUIRED, example = "Exame de Sangue")
@@ -51,6 +51,6 @@ public class Exam {
 
     @Schema(description = "Paciente associado ao exame", requiredMode = Schema.RequiredMode.REQUIRED)
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "patient_id", nullable = false)
+    @JoinColumn(name = "patient_id", referencedColumnName = "patient_id")
     private Patient patient;
 }

@@ -103,7 +103,7 @@ public class PatientService {
     }
 
     @Transactional(readOnly = true)
-    public Page<PatientResponseDTO> listPatients(String fullName, String phone, String email, Pageable pageable) {
+    public Page<PatientResponseDTO> listPatients(String fullName, String phone, String email, Long id, Pageable pageable) {
 
         Page<Patient> result;
 
@@ -114,6 +114,8 @@ public class PatientService {
             result = patientRepository.findByPhoneContaining(normalizedPhone, pageable);
         } else if (email != null && !email.isEmpty()) {
             result = patientRepository.findByEmailIgnoreCase(email, pageable);
+        } else if (id != null) {
+            result = patientRepository.findById(id, pageable);
         } else {
             result = patientRepository.findAll(pageable);
         }

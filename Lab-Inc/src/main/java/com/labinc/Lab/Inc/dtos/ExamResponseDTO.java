@@ -1,6 +1,5 @@
 package com.labinc.Lab.Inc.dtos;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.labinc.Lab.Inc.entities.Exam;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -18,17 +17,15 @@ import java.time.LocalTime;
 public class ExamResponseDTO {
 
     @Schema(description = "ID do exame", example = "1")
-    private Long id;
+    private Long examId;
 
     @Schema(description = "Nome do exame", example = "Exame de Sangue")
     private String examName;
 
     @Schema(description = "Data do exame", example = "15/10/2024")
-    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate examDate;
 
     @Schema(description = "Hora do exame", example = "14:30")
-    @JsonFormat(pattern = "HH:mm")
     private LocalTime examTime;
 
     @Schema(description = "Tipo do exame", example = "Laboratorial")
@@ -44,11 +41,14 @@ public class ExamResponseDTO {
     private String result;
 
     @Schema(description = "ID do paciente associado ao exame", example = "1")
-    private Long patientId;
+    private Long id;
+
+    @Schema(description = "Nome do paciente associado ao exame", example = "Ana Souza")
+    private String fullName;
 
 
     public ExamResponseDTO(Exam exam){
-        id = exam.getId();
+        examId = exam.getExamId();
         examName = exam.getExamName();
         examDate = exam.getExamDate();
         examTime = exam.getExamTime();
@@ -56,7 +56,8 @@ public class ExamResponseDTO {
         lab = exam.getLab();
         docUrl = exam.getDocUrl();
         result = exam.getResult();
-        patientId = exam.getPatient().getId();
+        id = exam.getPatient().getId();
+        fullName = exam.getPatient().getFullName();
     }
 
 }

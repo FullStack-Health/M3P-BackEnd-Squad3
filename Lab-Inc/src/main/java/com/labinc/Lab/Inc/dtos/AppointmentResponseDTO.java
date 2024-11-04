@@ -1,10 +1,9 @@
 package com.labinc.Lab.Inc.dtos;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -14,6 +13,11 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @Schema(description = "Dados de resposta para uma consulta")
 public class AppointmentResponseDTO {
+        @Schema(description = "ID do paciente", example = "1")
+        private Long id;
+
+        @Schema(description = "Nome completo do paciente", example = "Maria Silva")
+        private String fullName;
 
         @Schema(description = "ID da consulta", example = "1")
         private Long appointmentId;
