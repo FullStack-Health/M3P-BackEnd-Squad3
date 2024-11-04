@@ -27,6 +27,9 @@ Em suma, este software é uma ferramenta indispensável para a gestão do invent
 - **GitHub**: Plataforma para gestão de projetos com controle de versão Git
 - **PostgreSQL**: Sistema de gerenciamento de banco de dados relacional
 
+## Documentação da API
+- A documentação completa da API pode ser acessada através do Swagger: http://localhost:8080/swagger-ui/index.html.
+
 ## Como Executar
 
 
