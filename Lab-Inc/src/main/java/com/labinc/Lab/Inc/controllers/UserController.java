@@ -68,7 +68,6 @@ public class UserController {
     })
     public ResponseEntity<Page<UserResponseDTO>> getAllUsers(
             @Parameter(description = "ID do usuário", example = "1") @RequestParam(required = false) Long userId,
-            @Parameter(description = "Nome completo do usuário", example = "João da Silva") @RequestParam(required = false) String fullName,
             @Parameter(description = "Email do usuário", example = "joao.silva@example.com") @RequestParam(required = false) String email,
             Pageable pageable) {
 
