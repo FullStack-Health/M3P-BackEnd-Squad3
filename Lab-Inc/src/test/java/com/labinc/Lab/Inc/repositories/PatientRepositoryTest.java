@@ -35,7 +35,7 @@ public class PatientRepositoryTest {
         testUser.setFullName("Cristian User");
         testUser.setEmail("user@exemplo.com");
         testUser.setBirthdate(LocalDate.of(1990, 5, 21));
-        testUser.setCpf("000.888.456-12");
+        testUser.setCpf("000.000.000-99");
         testUser.setPhone("(48) 9 9856-2345");
         testUser.setPassword("securePassword");
         testUser = userRepository.save(testUser);
