@@ -3,6 +3,11 @@ package com.labinc.Lab.Inc.controllers;
 import com.labinc.Lab.Inc.dtos.MedicalRecordResponseDTO;
 import com.labinc.Lab.Inc.services.MedicalRecordService;
 import com.labinc.Lab.Inc.services.UserToPatientService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +26,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/medical-record")
+@Tag(name = "Medical Record", description = "Endpoint para gerenciamento de prontuários médicos")
 public class MedicalRecordController {
 
     private static final Logger logger = LoggerFactory.getLogger(MedicalRecordController.class);
@@ -32,8 +38,13 @@ public class MedicalRecordController {
     private UserToPatientService userToPatientService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<MedicalRecordResponseDTO> getMedicalRecord(
-            @PathVariable("id") Long pathId, HttpServletRequest request) {
+    @Operation(summary = "Obtém o prontuário médico de um paciente", description = "Obtém o prontuário médico de um paciente com base no ID fornecido")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Prontuário médico recuperado com sucesso"),
+            @ApiResponse(responseCode = "401", description = "Falha de autenticação"),
+            @ApiResponse(responseCode = "404", description = "Prontuário médico não encontrado")
+    })
+    public ResponseEntity<MedicalRecordResponseDTO> getMedicalRecord(@Parameter(description = "ID do prontuário médico", required = true, example = "1") @PathVariable("id") Long pathId, HttpServletRequest request) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Long userId = getUserIdFromAuthentication(auth);

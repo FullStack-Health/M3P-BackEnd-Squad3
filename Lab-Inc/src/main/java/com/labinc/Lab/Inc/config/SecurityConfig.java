@@ -39,9 +39,15 @@ public class SecurityConfig {
     @Value("${jwt.private.key}")
     private RSAPrivateKey privateKey;
 
+    private static final String[] SWAGGER_LIST_URL = { "/v2/api-docs", "/v3/api-docs",
+            "/v3/api-docs/**", "/swagger-resources", "/swagger-resources/**", "/configuration/ui",
+            "/configuration/security", "/swagger-ui/**", "/webjars/**", "/swagger-ui.html"};
+
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> auth
+                        .requestMatchers(SWAGGER_LIST_URL).permitAll()
                         .requestMatchers(HttpMethod.POST, "/login", "/users/pre-registration").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/users/email/{email}/redefine-password").permitAll()
 

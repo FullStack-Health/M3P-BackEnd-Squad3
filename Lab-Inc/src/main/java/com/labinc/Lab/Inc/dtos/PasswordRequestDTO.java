@@ -10,8 +10,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "Dados de requisição para atualização de senha do usuário")
 public class PasswordRequestDTO {
-    @Schema(description = "User password")
+    @Schema(description = "Senha do usuário", requiredMode = Schema.RequiredMode.REQUIRED, example = "novaSenha123")
     @NotBlank(message = "A senha é obrigatória")
     @Size(max = 255, message = "A senha deve ter no máximo 255 caracteres")
     private String password;

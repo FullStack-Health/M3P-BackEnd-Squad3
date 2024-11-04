@@ -57,7 +57,7 @@ public class UserService {
         userRepository.deleteById(userId);
     }
 
-    public Page<UserResponseDTO> getAllUsers(Long userId, String fullName, String email, Pageable pageable) {
+    public Page<UserResponseDTO> getAllUsers(Long userId, String email, Pageable pageable) {
         if (userId != null) {
             return userRepository.findByUserIdWithPagination(userId, pageable).map(userMapper::toResponseDTO);
         } else if (email != null) {
