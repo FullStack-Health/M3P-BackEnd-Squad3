@@ -11,14 +11,15 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "Dados de requisição para login de usuário")
 public class LoginRequestDTO {
-    @Schema(description = "User email")
+    @Schema(description = "Email do usuário", requiredMode = Schema.RequiredMode.REQUIRED, example = "usuario@example.com")
     @Email(message = "O email deve ser válido")
     @NotBlank(message = "O email é obrigatório")
     @Size(max = 255, message = "O email deve ter no máximo 255 caracteres")
     private String email;
 
-    @Schema(description = "User password")
+    @Schema(description = "Senha do usuário", requiredMode = Schema.RequiredMode.REQUIRED, example = "senha123")
     @NotBlank(message = "A senha é obrigatória")
     @Size(max = 255, message = "A senha deve ter no máximo 255 caracteres")
     private String password;
