@@ -1,12 +1,34 @@
 version: '3.8'
 
 services:
-  labinc-db:
+  postgres:
     image: postgres:latest
-    container_name: labinc-container
+    container_name: postgres
     ports:
       - "5431:5432"
     environment:
       POSTGRES_PASSWORD: admin
       POSTGRES_USER: admin
       POSTGRES_DB: BDLabInc
+
+    networks:
+      - postgres-network
+
+    volumes:
+      - ${PWD}/db-data/:/var/lib/postgresql/data/
+
+  labinc:
+    build: .
+    container_name: labinc
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/BDLabInc
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres
+    networks:
+      - postgres-network
+
+networks:
+  postgres-network:
+    driver: bridge
