@@ -8,10 +8,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "Dados de resposta para login de usuário")
 public class LoginResponseDTO {
-    @Schema(description = "JSON Web Token value")
+    @Schema(description = "Valor do JSON Web Token", requiredMode = Schema.RequiredMode.REQUIRED, example = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...")
     private String token;
 
-    @Schema(description = "Time after which the token is no longer valid")
+    @Schema(description = "Tempo após o qual o token não é mais válido", requiredMode = Schema.RequiredMode.REQUIRED, example = "3600")
     private Long expirationTime;
 }

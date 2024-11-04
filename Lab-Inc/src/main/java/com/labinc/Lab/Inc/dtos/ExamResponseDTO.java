@@ -1,6 +1,5 @@
 package com.labinc.Lab.Inc.dtos;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.labinc.Lab.Inc.entities.Exam;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -14,36 +13,37 @@ import java.time.LocalTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "Dados de resposta para um exame")
 public class ExamResponseDTO {
 
-    @Schema(description = " Exam examId")
+    @Schema(description = "ID do exame", example = "1")
     private Long examId;
 
-    @Schema(description = " Exam examName")
+    @Schema(description = "Nome do exame", example = "Exame de Sangue")
     private String examName;
 
-    @Schema(description = " Exam examDate")
+    @Schema(description = "Data do exame", example = "15/10/2024")
     private LocalDate examDate;
 
-    @Schema(description = " Exam examTime")
+    @Schema(description = "Hora do exame", example = "14:30")
     private LocalTime examTime;
 
-    @Schema(description = " Exam examType")
+    @Schema(description = "Tipo do exame", example = "Laboratorial")
     private String examType;
 
-    @Schema(description = " Exam lab")
+    @Schema(description = "Laboratório do exame", example = "Laboratório XYZ")
     private String lab;
 
-    @Schema(description = " Exam docUrl")
+    @Schema(description = "URL do documento do exame", example = "http://example.com/doc.pdf")
     private String docUrl;
 
-    @Schema(description = " Exam result")
+    @Schema(description = "Resultado do exame", example = "Negativo")
     private String result;
 
-    @Schema(description = " Exam patientId")
+    @Schema(description = "ID do paciente associado ao exame", example = "1")
     private Long id;
 
-    @Schema(description = " Exam patientFullName")
+    @Schema(description = "Nome do paciente associado ao exame", example = "Ana Souza")
     private String fullName;
 
 
