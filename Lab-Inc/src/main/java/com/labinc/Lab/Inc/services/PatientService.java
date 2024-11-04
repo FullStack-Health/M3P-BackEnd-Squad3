@@ -27,7 +27,7 @@ public class PatientService {
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public PatientService(PatientRepository patientRepository, UserRepository userRepository, UserMapper userMapper, PasswordEncoder passwordEncoder) {
+    public PatientService(PatientRepository patientRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.patientRepository = patientRepository;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
