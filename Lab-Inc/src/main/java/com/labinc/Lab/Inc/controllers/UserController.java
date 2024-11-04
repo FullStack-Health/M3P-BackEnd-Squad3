@@ -72,7 +72,7 @@ public class UserController {
             @Parameter(description = "Email do usuário", example = "joao.silva@example.com") @RequestParam(required = false) String email,
             Pageable pageable) {
 
-        Page<UserResponseDTO> users = userService.getAllUsers(userId, fullName, email, pageable);
+        Page<UserResponseDTO> users = userService.getAllUsers(userId, email, pageable);
         return ResponseEntity.ok(users);
     }
 
