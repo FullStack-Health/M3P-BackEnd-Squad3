@@ -11,9 +11,9 @@ import com.labinc.Lab.Inc.repositories.PatientRepository;
 import com.labinc.Lab.Inc.repositories.UserRepository;
 import com.labinc.Lab.Inc.services.exceptions.ResourceAlreadyExistsException;
 import com.labinc.Lab.Inc.services.exceptions.ResourceNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -28,7 +28,8 @@ public class PatientService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
-    public PatientService(PatientRepository patientRepository, UserRepository userRepository, UserMapper userMapper, BCryptPasswordEncoder passwordEncoder) {
+    @Autowired
+    public PatientService(PatientRepository patientRepository, UserRepository userRepository, UserMapper userMapper, PasswordEncoder passwordEncoder) {
         this.patientRepository = patientRepository;
         this.userRepository = userRepository;
         this.userMapper = userMapper;
