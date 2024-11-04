@@ -22,24 +22,25 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     @Autowired(required = false)
-    private BCryptPasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository, UserMapper userMapper) {
+    public UserService(UserRepository userRepository, UserMapper userMapper, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public UserResponseDTO updateUser(Long userId, UserRequestDTO userRequestDTO) throws BadRequestException {
         User user = userRepository.findByUserId(userId).orElseThrow(() -> new EntityNotFoundException(
                 "User not found"));
 
-        if (userRepository.existsByCpf(userRequestDTO.getCpf()) && !user.getCpf().equals(userRequestDTO.getCpf())) {
-            throw new DuplicateKeyException("cpf already exists in another user record");
+        if (userRepository.existsByCpf(userRequestDTO.getCpf()) && user.getCpf().equals(userRequestDTO.getCpf())) {
+            throw new ConflictException("cpf already exists in another user record");
         }
 
-        if (userRepository.existsByEmail(userRequestDTO.getEmail()) && !user.getEmail().equals(userRequestDTO.getEmail())) {
-            throw new DuplicateKeyException("email already exists in another user record");
+        if (userRepository.existsByEmail(userRequestDTO.getEmail()) && user.getEmail().equals(userRequestDTO.getEmail())) {
+            throw new ConflictException("email already exists in another user record");
         }
 
         userMapper.updateUserFromDto(user, userRequestDTO);
@@ -98,7 +99,8 @@ public class UserService {
             user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
             user.setPasswordMasked(user.getPasswordMasked(userRequest.getPassword()));
 
-            return userMapper.toResponseDTO(userRepository.save(user));
+            userRepository.save(user);
+            return userMapper.toResponseDTO(user);
         }
     }
 
