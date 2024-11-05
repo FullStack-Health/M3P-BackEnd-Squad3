@@ -1,6 +1,7 @@
 package com.labinc.Lab.Inc.mappers;
 
 import com.labinc.Lab.Inc.dtos.PartialUserRequestDTO;
+import com.labinc.Lab.Inc.dtos.PatientRequestDTO;
 import com.labinc.Lab.Inc.dtos.UserRequestDTO;
 import com.labinc.Lab.Inc.dtos.UserResponseDTO;
 import com.labinc.Lab.Inc.entities.User;
@@ -28,6 +29,16 @@ public class UserMapper {
         user.setBirthdate(dto.getBirthdate());
         user.setCpf(dto.getCpf());
         user.setPhone(dto.getPhone());
+    }
+
+    public User updateUserFromPatientDto(User user, PatientRequestDTO dto) {
+        user.setFullName(dto.getFullName());
+        user.setEmail(dto.getEmail());
+        user.setBirthdate(dto.getBirthDate());
+        user.setCpf(dto.getCpf());
+        user.setPhone(dto.getPhone());
+
+        return user;
     }
 
     public User toUser(PartialUserRequestDTO source) {
