@@ -48,6 +48,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> auth
                         .requestMatchers(SWAGGER_LIST_URL).permitAll()
+                        .requestMatchers(HttpMethod.GET, "/ping").permitAll()
                         .requestMatchers(HttpMethod.POST, "/login", "/users/pre-registration").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/users/email/{email}/redefine-password").permitAll()
 
