@@ -37,7 +37,7 @@ public class PatientService {
     public PatientResponseDTO newPatient(PatientRequestDTO patientRequestDTO) {
 
         // Verifica se CPF já existe
-        if (patientRepository.existsByCpf(patientRequestDTO.getCpf())) {
+        if (patientRepository.existsByCpf(patientRequestDTO.getCpf()) || userRepository.existsByCpf(patientRequestDTO.getCpf())) {
             throw new ResourceAlreadyExistsException("O CPF já está cadastrado: " + patientRequestDTO.getCpf());
         }
 
@@ -47,7 +47,7 @@ public class PatientService {
         }
 
         // Verifica se Email já existe
-        if (patientRepository.existsByEmail(patientRequestDTO.getEmail())) {
+        if (patientRepository.existsByEmail(patientRequestDTO.getEmail()) || userRepository.existsByEmail(patientRequestDTO.getEmail())) {
             throw new ResourceAlreadyExistsException("O Email já está cadastrado: " + patientRequestDTO.getEmail());
         }
 
