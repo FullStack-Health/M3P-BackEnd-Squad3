@@ -2,8 +2,12 @@ package com.labinc.Lab.Inc.services;
 
 import com.labinc.Lab.Inc.controllers.handlers.ConflictException;
 import com.labinc.Lab.Inc.dtos.*;
+import com.labinc.Lab.Inc.entities.AllowedRoles;
+import com.labinc.Lab.Inc.entities.Patient;
 import com.labinc.Lab.Inc.entities.User;
+import com.labinc.Lab.Inc.mappers.PatientMapper;
 import com.labinc.Lab.Inc.mappers.UserMapper;
+import com.labinc.Lab.Inc.repositories.PatientRepository;
 import com.labinc.Lab.Inc.repositories.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.apache.coyote.BadRequestException;
@@ -21,13 +25,15 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final PatientRepository patientRepository;
     @Autowired(required = false)
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository, UserMapper userMapper, BCryptPasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, UserMapper userMapper, PatientRepository patientRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.patientRepository = patientRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -41,6 +47,12 @@ public class UserService {
 
         if (userRepository.existsByEmailAndUserIdNot(userRequestDTO.getEmail(), userId)) {
             throw new DuplicateKeyException("email already exists in another user record");
+        }
+
+        if (user.getRoleName() == AllowedRoles.SCOPE_PACIENTE) {
+            Patient patient = patientRepository.findByUser_UserId(userRequestDTO.getUserId());
+
+            patientRepository.save(PatientMapper.updatePatientFromUserDTO(userRequestDTO, patient));
         }
 
         userMapper.updateUserFromDto(user, userRequestDTO);
