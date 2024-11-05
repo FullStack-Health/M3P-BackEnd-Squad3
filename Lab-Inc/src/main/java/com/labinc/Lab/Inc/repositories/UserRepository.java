@@ -28,4 +28,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Page<User> findByEmailWithPagination(@Param("email") String email, Pageable pageable);
 
     Optional<User> findByCpf(String cpf);
+
+    boolean existsByCpfAndUserIdNot(String cpf, Long userId);
+
+    boolean existsByEmailAndUserIdNot(String email, Long userId);
+
 }
