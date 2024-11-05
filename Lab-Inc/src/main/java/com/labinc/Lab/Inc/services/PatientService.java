@@ -6,6 +6,7 @@ import com.labinc.Lab.Inc.entities.AllowedRoles;
 import com.labinc.Lab.Inc.entities.Patient;
 import com.labinc.Lab.Inc.entities.User;
 import com.labinc.Lab.Inc.mappers.PatientMapper;
+import com.labinc.Lab.Inc.mappers.UserMapper;
 import com.labinc.Lab.Inc.repositories.PatientRepository;
 import com.labinc.Lab.Inc.repositories.UserRepository;
 import com.labinc.Lab.Inc.services.exceptions.ResourceAlreadyExistsException;
@@ -18,6 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
+
 
 @Service
 public class PatientService {
@@ -25,12 +28,14 @@ public class PatientService {
     private final PatientRepository patientRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
 
     @Autowired
-    public PatientService(PatientRepository patientRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public PatientService(PatientRepository patientRepository, UserRepository userRepository, PasswordEncoder passwordEncoder, UserMapper userMapper) {
         this.patientRepository = patientRepository;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.userMapper = userMapper;
     }
 
     @Transactional
@@ -129,7 +134,30 @@ public class PatientService {
         Patient patient = patientRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Paciente com ID: " + id + " não encontrado."));
 
+        User user = userRepository.findById(patient.getUser().getUserId())
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário com ID: " + id + " não encontrado."));
+
+        if (!Objects.equals(patientRequestDTO.getCpf(), patient.getCpf())) {
+            if (patientRepository.existsByCpf(patientRequestDTO.getCpf()) || userRepository.existsByCpf(patientRequestDTO.getCpf())) {
+                throw new ResourceAlreadyExistsException("O CPF já está cadastrado: " + patientRequestDTO.getCpf());
+            }
+        }
+
+        if (!Objects.equals(patientRequestDTO.getRg(), patient.getRg())) {
+            if (patientRepository.existsByRg(patientRequestDTO.getRg())) {
+                throw new ResourceAlreadyExistsException("O RG já está cadastrado: " + patientRequestDTO.getRg());
+            }
+        }
+
+        if (!Objects.equals(patientRequestDTO.getEmail(), patient.getEmail())) {
+            if (patientRepository.existsByEmail(patientRequestDTO.getEmail()) || userRepository.existsByEmail(patientRequestDTO.getEmail())) {
+                throw new ResourceAlreadyExistsException("O Email já está cadastrado: " + patientRequestDTO.getEmail());
+            }
+        }
+
         PatientMapper.updatePatientFromDTO(patientRequestDTO, patient);
+
+        userRepository.save(userMapper.updateUserFromPatientDto(user, patientRequestDTO));
 
         Patient updatedPatient = patientRepository.save(patient);
 
@@ -137,7 +165,7 @@ public class PatientService {
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
-    public void deletePatient(Long id){
+    public void deletePatient(Long id) {
 
         if (!patientRepository.existsById(id)) {
             throw new ResourceNotFoundException("Paciente com ID: " + id + " não encontrado.");
