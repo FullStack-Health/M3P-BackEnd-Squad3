@@ -48,6 +48,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> auth
                         .requestMatchers(SWAGGER_LIST_URL).permitAll()
+                        .requestMatchers(HttpMethod.GET, "/ping").permitAll()
                         .requestMatchers(HttpMethod.POST, "/login", "/users/pre-registration").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/users/email/{email}/redefine-password").permitAll()
 
@@ -73,7 +74,11 @@ public class SecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
+        config.setAllowedOrigins(Arrays.asList(
+                "http://localhost:4200",
+                "https://m3p-front-end-squad3.vercel.app",
+                "https://labinc.vercel.app"
+        ));
         config.setAllowedHeaders(Arrays.asList("*"));
         config.setAllowedMethods(Arrays.asList("*"));
         source.registerCorsConfiguration("/**", config);

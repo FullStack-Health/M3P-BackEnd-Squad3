@@ -83,9 +83,9 @@ public class UserServiceTest {
     @Test
     void testUpdateUser_Conflict_CpfExists() {
         when(userRepository.findByUserId(anyLong())).thenReturn(Optional.of(user));
-        when(userRepository.existsByCpf(anyString())).thenReturn(true);
+        when(userRepository.existsByCpfAndUserIdNot(userRequestDTO.getCpf(), 1L)).thenReturn(true);
 
-        ConflictException exception = assertThrows(ConflictException.class, () ->
+        DuplicateKeyException exception = assertThrows(DuplicateKeyException.class, () ->
                 userService.updateUser(1L, userRequestDTO)
         );
 
@@ -95,9 +95,9 @@ public class UserServiceTest {
     @Test
     void testUpdateUser_Conflict_EmailExists() {
         when(userRepository.findByUserId(anyLong())).thenReturn(Optional.of(user));
-        when(userRepository.existsByEmail(anyString())).thenReturn(true);
+        when(userRepository.existsByEmailAndUserIdNot(userRequestDTO.getEmail(), 1L)).thenReturn(true);
 
-        ConflictException exception = assertThrows(ConflictException.class, () ->
+        DuplicateKeyException exception = assertThrows(DuplicateKeyException.class, () ->
                 userService.updateUser(1L, userRequestDTO)
         );
 

@@ -2,6 +2,7 @@ package com.labinc.Lab.Inc.mappers;
 
 import com.labinc.Lab.Inc.dtos.PatientRequestDTO;
 import com.labinc.Lab.Inc.dtos.PatientResponseDTO;
+import com.labinc.Lab.Inc.dtos.UserRequestDTO;
 import com.labinc.Lab.Inc.entities.Patient;
 import org.springframework.stereotype.Component;
 
@@ -68,6 +69,16 @@ public class PatientMapper {
         if (dto.getReferencePoint() != null) {
             patient.setReferencePoint(dto.getReferencePoint());
         }
+    }
+
+    public static Patient updatePatientFromUserDTO(UserRequestDTO dto, Patient patient) {
+        patient.setFullName(dto.getFullName());
+        patient.setEmail(dto.getEmail());
+        patient.setBirthDate(dto.getBirthDate());
+        patient.setCpf(dto.getCpf());
+        patient.setPhone(dto.getPhone());
+
+        return patient;
     }
 
     public PatientResponseDTO toResponseDTO(Patient patient) {
