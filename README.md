@@ -31,8 +31,7 @@ Em suma, este software é uma ferramenta indispensável para a gestão do invent
 - O deploy da API foi feito no render na versão gratuita
 - Obs: a versão gratuita do render deixa a API inativa após um tempo sem chamadas
 - Para ativar a API basta fazer uma chamada que ela vai ser ativada, e na segunda chamada para a API ela vai funcionar normalmente.
-- Link
-- https://m3p-backend-squad3-6k7j.onrender.com
+- Link da API https://m3p-backend-squad3-6k7j.onrender.com
 
 ## Documentação da API
 - A documentação completa da API pode ser acessada através do Swagger:
@@ -82,4 +81,7 @@ docker images
 
 #Executando um Contêiner a partir da Imagem Docker
 docker run -d -p 8080:80 nome-da-imagem
+
+# Ou baixe a imagem pronta do dockerhub
+https://hub.docker.com/r/gabrielfilomeno/lab-inc-app
 ```
