@@ -7,6 +7,8 @@ import com.labinc.Lab.Inc.entities.Patient;
 import com.labinc.Lab.Inc.entities.User;
 import com.labinc.Lab.Inc.mappers.PatientMapper;
 import com.labinc.Lab.Inc.mappers.UserMapper;
+import com.labinc.Lab.Inc.repositories.AppointmentRepository;
+import com.labinc.Lab.Inc.repositories.ExamRepository;
 import com.labinc.Lab.Inc.repositories.PatientRepository;
 import com.labinc.Lab.Inc.repositories.UserRepository;
 import com.labinc.Lab.Inc.services.exceptions.ResourceAlreadyExistsException;
@@ -29,13 +31,17 @@ public class PatientService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
+    private final AppointmentRepository appointmentRepository;
+    private final ExamRepository examRepository;
 
     @Autowired
-    public PatientService(PatientRepository patientRepository, UserRepository userRepository, PasswordEncoder passwordEncoder, UserMapper userMapper) {
+    public PatientService(PatientRepository patientRepository, UserRepository userRepository, PasswordEncoder passwordEncoder, UserMapper userMapper, AppointmentRepository appointmentRepository, ExamRepository examRepository) {
         this.patientRepository = patientRepository;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.userMapper = userMapper;
+        this.appointmentRepository = appointmentRepository;
+        this.examRepository = examRepository;
     }
 
     @Transactional
@@ -60,7 +66,7 @@ public class PatientService {
         User user = new User();
         user.setFullName(patientRequestDTO.getFullName());
         user.setEmail(patientRequestDTO.getEmail());
-        user.setBirthdate(patientRequestDTO.getBirthDate());
+        user.setBirthDate(patientRequestDTO.getBirthDate());
         user.setCpf(patientRequestDTO.getCpf());
         user.setPassword(passwordEncoder.encode(patientRequestDTO.getCpf())); // Configura a senha como o CPF encriptado
         user.setPasswordMasked(user.getPasswordMasked(patientRequestDTO.getCpf()));
@@ -170,6 +176,14 @@ public class PatientService {
         if (!patientRepository.existsById(id)) {
             throw new ResourceNotFoundException("Paciente com ID: " + id + " não encontrado.");
         }
+
+        boolean hasAppointment = appointmentRepository.existsByPatient_Id(id);
+        boolean hasExam = examRepository.existsByPatient_Id(id);
+
+        if(hasAppointment || hasExam) {
+            throw new IllegalStateException("Cannot delete patient with appointments or exams");
+        }
+
         patientRepository.deleteById(id);
     }
 
