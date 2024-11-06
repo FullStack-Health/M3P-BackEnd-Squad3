@@ -8,4 +8,6 @@ import java.util.List;
 public interface ExamRepository extends JpaRepository<Exam, Long> {
 
     List<Exam> findByPatient_Id(Long id);
+
+    boolean existsByPatient_Id(Long id);
 }

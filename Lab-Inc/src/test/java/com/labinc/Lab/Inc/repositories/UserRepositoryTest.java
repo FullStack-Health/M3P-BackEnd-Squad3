@@ -30,7 +30,7 @@ public class UserRepositoryTest {
         testUser.setRoleName(AllowedRoles.SCOPE_PACIENTE);
         testUser.setFullName("Cristian User");
         testUser.setEmail("user@exemplo.com");
-        testUser.setBirthdate(LocalDate.of(1990, 5, 21));
+        testUser.setBirthDate(LocalDate.of(1990, 5, 21));
         testUser.setCpf("000.000.000-99");
         testUser.setPhone("(48) 9 9856-2345");
         testUser.setPassword("securePassword");

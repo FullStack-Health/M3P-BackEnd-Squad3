@@ -4,6 +4,9 @@ import com.labinc.Lab.Inc.dtos.PatientRequestDTO;
 import com.labinc.Lab.Inc.dtos.PatientResponseDTO;
 import com.labinc.Lab.Inc.entities.Patient;
 import com.labinc.Lab.Inc.entities.User;
+import com.labinc.Lab.Inc.mappers.UserMapper;
+import com.labinc.Lab.Inc.repositories.AppointmentRepository;
+import com.labinc.Lab.Inc.repositories.ExamRepository;
 import com.labinc.Lab.Inc.repositories.PatientRepository;
 import com.labinc.Lab.Inc.repositories.UserRepository;
 import com.labinc.Lab.Inc.services.exceptions.ResourceAlreadyExistsException;
@@ -36,7 +39,16 @@ public class PatientServiceTest {
     private UserRepository userRepository;
 
     @Mock
+    private AppointmentRepository appointmentRepository;
+
+    @Mock
+    private ExamRepository examRepository;
+
+    @Mock
     private PasswordEncoder passwordEncoder;
+
+    @Mock
+    private UserMapper userMapper;
 
     @InjectMocks
     private PatientService patientService;
@@ -62,6 +74,8 @@ public class PatientServiceTest {
         user.setUserId(1L);
         user.setFullName("Cristian User");
         user.setCpf("12345678901");
+
+        patient.setUser(user);
     }
 
     @Test
@@ -142,18 +156,48 @@ public class PatientServiceTest {
 
     @Test
     void testUpdatePatient_Success() {
+
+        // Configuração dos mocks
         PatientRequestDTO updateRequest = new PatientRequestDTO();
         updateRequest.setFullName("Cristian Assis");
+        updateRequest.setCpf("12345678901");
+        updateRequest.setRg("RG123456");
+        updateRequest.setEmail("cristian_yamamoto@estudante.sesisenai.org.br");
+        updateRequest.setPhone("(99) 9 9999-9999");
 
         when(patientRepository.findById(1L)).thenReturn(Optional.of(patient));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(patientRepository.save(any(Patient.class))).thenReturn(patient);
+        when(userRepository.save(any(User.class))).thenReturn(user);
+        when(userRepository.existsByCpf(updateRequest.getCpf())).thenReturn(false);
+        when(userRepository.existsByEmail(updateRequest.getEmail())).thenReturn(false);
+        when(patientRepository.existsByCpf(updateRequest.getCpf())).thenReturn(false);
+        when(patientRepository.existsByRg(updateRequest.getRg())).thenReturn(false);
+        when(patientRepository.existsByEmail(updateRequest.getEmail())).thenReturn(false);
+
+        when(userMapper.updateUserFromPatientDto(any(User.class), any(PatientRequestDTO.class))).thenAnswer(invocation -> {
+            User user = invocation.getArgument(0);
+            PatientRequestDTO dto = invocation.getArgument(1);
+            user.setFullName(dto.getFullName());
+            user.setCpf(dto.getCpf());
+            user.setEmail(dto.getEmail());
+            user.setPhone(dto.getPhone());
+            return user;
+        });
 
         PatientResponseDTO response = patientService.updatePatient(1L, updateRequest);
 
         assertNotNull(response);
         assertEquals("Cristian Assis", response.getFullName());
+        assertEquals("12345678901", response.getCpf());
+        assertEquals("RG123456", response.getRg());
+        assertEquals("cristian_yamamoto@estudante.sesisenai.org.br", response.getEmail());
+        assertEquals("(99) 9 9999-9999", response.getPhone());
         verify(patientRepository).findById(1L);
+        verify(userRepository).findById(1L);
         verify(patientRepository).save(any(Patient.class));
+        verify(userRepository).save(any(User.class));
+        verify(userMapper).updateUserFromPatientDto(any(User.class), any(PatientRequestDTO.class));
     }
 
     @Test
@@ -171,11 +215,27 @@ public class PatientServiceTest {
     @Test
     void testDeletePatient_Success() {
         when(patientRepository.existsById(1L)).thenReturn(true);
-
+        when(appointmentRepository.existsByPatient_Id(1L)).thenReturn(false);
+        when(examRepository.existsByPatient_Id(1L)).thenReturn(false);
         patientService.deletePatient(1L);
-
         verify(patientRepository).existsById(1L);
         verify(patientRepository).deleteById(1L);
+    }
+
+    @Test
+    void testDeletePatient_Error_Because_Exists_Appointment_And_Exams() {
+        when(patientRepository.existsById(1L)).thenReturn(true);
+        when(appointmentRepository.existsByPatient_Id(1L)).thenReturn(true);
+        when(examRepository.existsByPatient_Id(1L)).thenReturn(true);
+
+        IllegalStateException thrown = assertThrows(
+                IllegalStateException.class,
+                () -> patientService.deletePatient(1L),
+                "Expected deletePatient(1L) to throw, but it didn't");
+
+        assertTrue(thrown.getMessage().contains("Cannot delete patient with appointments or exams"));
+        verify(patientRepository).existsById(1L);
+        verify(patientRepository, never()).deleteById(any());
     }
 
     @Test
