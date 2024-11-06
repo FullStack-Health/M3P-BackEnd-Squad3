@@ -27,7 +27,7 @@ public class UserResponseDTO {
     private String email;
 
     @Schema(description = "Data de nascimento do usuário", example = "01/01/1990")
-    private LocalDate birthdate;
+    private LocalDate birthDate;
 
     @Schema(description = "CPF do usuário", example = "000.000.000-00")
     private String cpf;

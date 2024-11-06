@@ -74,7 +74,7 @@ public class PatientMapper {
     public static Patient updatePatientFromUserDTO(UserRequestDTO dto, Patient patient) {
         patient.setFullName(dto.getFullName());
         patient.setEmail(dto.getEmail());
-        patient.setBirthDate(dto.getBirthdate());
+        patient.setBirthDate(dto.getBirthDate());
         patient.setCpf(dto.getCpf());
         patient.setPhone(dto.getPhone());
 
