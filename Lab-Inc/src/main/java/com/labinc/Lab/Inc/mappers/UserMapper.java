@@ -15,7 +15,7 @@ public class UserMapper {
         dto.setUserId(user.getUserId());
         dto.setFullName(user.getFullName());
         dto.setEmail(user.getEmail());
-        dto.setBirthdate(user.getBirthdate());
+        dto.setBirthDate(user.getBirthDate());
         dto.setCpf(user.getCpf());
         dto.setRoleName((user.getRoleName()));
         dto.setPhone((user.getPhone()));
@@ -26,7 +26,7 @@ public class UserMapper {
     public void updateUserFromDto(User user, UserRequestDTO dto) {
         user.setFullName(dto.getFullName());
         user.setEmail(dto.getEmail());
-        user.setBirthdate(dto.getBirthdate());
+        user.setBirthDate(dto.getBirthDate());
         user.setCpf(dto.getCpf());
         user.setPhone(dto.getPhone());
     }
@@ -34,7 +34,7 @@ public class UserMapper {
     public User updateUserFromPatientDto(User user, PatientRequestDTO dto) {
         user.setFullName(dto.getFullName());
         user.setEmail(dto.getEmail());
-        user.setBirthdate(dto.getBirthDate());
+        user.setBirthDate(dto.getBirthDate());
         user.setCpf(dto.getCpf());
         user.setPhone(dto.getPhone());
 

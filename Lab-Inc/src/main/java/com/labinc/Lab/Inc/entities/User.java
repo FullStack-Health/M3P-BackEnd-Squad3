@@ -43,7 +43,7 @@ public class User implements UserDetails {
 
     @Column
     @Schema(description = "Data de nascimento do usuário", example = "21/05/1990")
-    private LocalDate birthdate;
+    private LocalDate birthDate;
 
     @Column(unique = true, length = 14)
     @Schema(description = "CPF do usuário", example = "027.889.456-12")

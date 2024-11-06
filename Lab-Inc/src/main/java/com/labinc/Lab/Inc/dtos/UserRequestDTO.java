@@ -38,7 +38,7 @@ public class UserRequestDTO {
 
     @Schema(description = "Data de nascimento do usuário", requiredMode = Schema.RequiredMode.REQUIRED, example = "1990-01-01")
     @NotNull(message = "birthdate is required")
-    private LocalDate birthdate;
+    private LocalDate birthDate;
 
     @Schema(description = "CPF do usuário", requiredMode = Schema.RequiredMode.REQUIRED, maxLength = 255, example = "000.000.000-00")
     @NotNull(message = "cpf is required")
