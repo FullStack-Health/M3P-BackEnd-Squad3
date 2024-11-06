@@ -29,9 +29,7 @@ Em suma, este software é uma ferramenta indispensável para a gestão do invent
 
 ## Documentação da API
 - A documentação completa da API pode ser acessada através do Swagger: 
-https://m3p-backend-squad3-6k7j.onrender.com/swagger-ui/index.html
-
-ou se estiver rodando localmente: 
+https://m3p-backend-squad3-6k7j.onrender.com/swagger-ui/index.html 
 http://localhost:8080/swagger-ui/index.html.
 
 ## Como Executar
