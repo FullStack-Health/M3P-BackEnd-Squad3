@@ -27,11 +27,20 @@ Em suma, este software é uma ferramenta indispensável para a gestão do invent
 - **GitHub**: Plataforma para gestão de projetos com controle de versão Git
 - **PostgreSQL**: Sistema de gerenciamento de banco de dados relacional
 
+## Deploy da API no render
+- O deploy da API foi feito no render na versão gratuita
+- Obs: a versão gratuita do render deixa a API inativa após um tempo sem chamadas
+- Para ativar a API basta fazer uma chamada que ela vai ser ativada, e na segunda chamada para a API ela vai funcionar normalmente.
+- Link
+- https://m3p-backend-squad3-6k7j.onrender.com
+
 ## Documentação da API
 - A documentação completa da API pode ser acessada através do Swagger:
 
+- Documentação via deploy no render
 https://m3p-backend-squad3-6k7j.onrender.com/swagger-ui/index.html
 
+- Documentação via API rodando localmente
 http://localhost:8080/swagger-ui/index.html.
 
 ## Como Executar
